@@ -1,7 +1,7 @@
 # MP1 - AppSec
 ##### Instructor: Adam Bates & Ling Ren
-CP1 Deadline --- Wednesday, September 7th,  6:00PM
-CP2 Deadline --- Thursday,  September 15th, 6:00PM
+CP1 Deadline --- Wednesday, September 7th, 6:00PM
+CP2 Deadline --- Thursday, September 15th, 6:00PM
 
 ## Project Setup
 1. Download VMWare
