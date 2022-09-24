@@ -1,5 +1,17 @@
-# CS 461 (fa22) repo for NetID: hongboz2
+# CS 461 --- Introduction to Computer Security
+##### Introduction to Computer Security  MPs
+##### Instructor: Adam Bates & Ling Ren
 
-GitHub username at initialization time: MarcoReusX
+## Repository
+#### MP1 - [AppSec](https://gitlab.engr.illinois.edu/hongboz2/computer_security/-/tree/main/AppSec)
 
-For next steps, please refer to the instructions provided by your course.
+Application Security
+
+#### MP2 - [WebSec](https://gitlab.engr.illinois.edu/hongboz2/computer_security/-/tree/main/WebSec)
+
+Web Security
+
+## Developers
+* Hongbo Zheng [NetID: hongboz2]
+* Max Song     [NetID: mcsong2 ]
+
