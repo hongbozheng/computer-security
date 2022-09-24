@@ -13,5 +13,4 @@ Web Security
 
 ## Developers
 * Hongbo Zheng [NetID: hongboz2]
-* Max Song     [NetID: mcsong2 ]
-
+* Max Song [NetID: mcsong2]

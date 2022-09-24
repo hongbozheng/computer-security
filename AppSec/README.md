@@ -32,5 +32,4 @@ Check `MP1 AppSec PDF`
 
 ## Developers
 * Hongbo Zheng [NetID: hongboz2]
-* Max Song     [NetID: mcsong2]
-
+* Max Song [NetID: mcsong2]
