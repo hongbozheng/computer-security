@@ -7,6 +7,14 @@ CP2 Deadline --- Thursday,  September 15th, 6:00PM
 1. Download VMWare
 2. Download Ubuntu 18.04 LTS (CS461 Virtual Machine) at [here](https://uofi.box.com/s/aqaixm5igvqbyxys7gpswxgcsf7nyqo6)
 3. Setup the VM in VMWare 
+4. After `git clone` this repo, go to `AppSec` folder and run the following commands:
+```
+cd AppSec
+```
+```
+./setcookie <NetID>
+```
+`<NetID>` is your student _NetID_ [use `hongboz2` for this repo]
 
 ## Build Project
 With the project setup, build the command-line application as follow:
