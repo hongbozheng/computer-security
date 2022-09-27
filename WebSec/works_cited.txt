@@ -3,3 +3,9 @@ Cite sources you conslulted for this MP here:
 MySQL Documentation:
 1. https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-execute.html
 2. https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-fetchone.html
+
+haslib sha256() Documentation:
+1. https://docs.python.org/3/library/hashlib.html
+
+MySQL DELETE Statement:
+1. https://www.w3schools.com/mysql/mysql_delete.asp

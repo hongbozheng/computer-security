@@ -26,7 +26,22 @@ class XSSEncodeAngles(object):
     @staticmethod
     def filter(user_input):
         #TODO: 1 of 2 in this file. Complete this filter definition to replace < and > with their HTML entities
-        return user_input	
+        start = 0
+        flag = 0
+        
+        while start < len(user_input) and flag == 0:
+            for i in range(start, len(user_input)):
+                if user_input[i] == '<':
+                    user_input = user_input[:i] + '&lt;' + user_input[i+1:]
+                    start += 4
+                    break
+                if user_input[i] == '>':
+                    user_input = user_input[:i] + '&gt;' + user_input[i+1:]
+                    start += 4
+                    break
+            if (i+1) >= len(user_input):
+    	        flag = 1
+        return user_input
 
 ############################################################
 # CSRF Defenses
@@ -54,6 +69,9 @@ class CSRFToken(object):
         token = request.get_cookie("csrf_token")
 
         #TODO: 2 of 2 in this file. Implement a CSRF token (see pseudocode in handout)
+        if not token:
+	        token = ''.join(random.sample(string.ascii_lowercase, 16)).encode("hex")
+	        response.set_cookie("csrf_token", token)
 
         return token
     @staticmethod

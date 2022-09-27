@@ -21,8 +21,9 @@ def connect():
     passwd = passwd.strip()
 
     return mdb.connect(host="localhost",
-                       user="TODO",
-                       passwd="TODO",
+                       user=username,
+                       passwd=passwd,
+                       #passwd="5a483fbaf87b31e29ac5c34487474273b0fbb4981a95b2caca81feba3eed7872",
                        db="project2");
 
 def createUser(username, password):
@@ -41,8 +42,9 @@ def createUser(username, password):
 
     db_rw = connect()
     cur = db_rw.cursor()
+    
     #TODO 2 of 6. Use cur.execute() to insert a new row into the users table containing the username, salt, and passwordhash
-    insert_stmt = ('INSERT INTO users (username, password, passwordhash) VALUES (%s, %s, %s)')
+    insert_stmt = ('INSERT INTO users (username, salt, passwordhash) VALUES (%s, %s, %s)')
     data = (username, salt, passwordhash)
     cur.execute(insert_stmt, data)
     db_rw.commit()
@@ -57,17 +59,17 @@ def validateUser(username, password):
     db_rw = connect()
     cur = db_rw.cursor()
     #TODO 3 of 6. Use cur.execute() to select the appropriate user record (if it exists)
-    select_stmt = ('SELECT * FROM users WHERE username = %s AND password = %s')
-    cur.execute(select_stmt, {'username':username, 'password':password})
+    select_stmt = ('SELECT * FROM users WHERE username = %(username)s')
+    cur.execute(select_stmt, {'username':username})
+    
     if cur.rowcount < 1:
         return False
-    
     user_record = cur.fetchone()
-    salt_hex = user_record[0]
+    salt_hex = user_record[2]
     while len(salt_hex) < 64:
         salt_hex = "0" + salt_hex
     salt = bytes.fromhex(salt_hex)
-    passwordhash_authoritative = user_record[1]
+    passwordhash_authoritative = user_record[3]
     salted = salt + str.encode(password)
 
     m = sha256()
@@ -90,7 +92,7 @@ def fetchUser(username):
     db_rw = connect()
     cur = db_rw.cursor(mdb.cursors.DictCursor)
     #TODO 4 of 6. Use cur.execute() to fetch the row with this username from the users table, if it exists
-    select_stmt = ('SELECT id, username FROM users WHERE username = %s')
+    select_stmt = ('SELECT id, username FROM users WHERE username = %(username)s')
     cur.execute(select_stmt, {'username':username})
     if cur.rowcount < 1:
         return None    
