@@ -27,7 +27,7 @@ To clean up the project
 make clean
 ```
 
-## Run Event Logging
+## Test MP1
 Check `MP1 AppSec PDF`
 
 ## Developers
