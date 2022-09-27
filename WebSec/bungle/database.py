@@ -124,7 +124,7 @@ def getHistory(user_id):
     #TODO 6 of 6. Use cur.execute() to fetch the most recent 15 queries from this user (including duplicates). 
     # Note: Make sure the query text is at index 0 in the returned rows. 
     # Otherwise you will get an error when the templating engine tries to use this object to build the HTML reply.
-    select_stmt = ('SELECT query FROM history WHERE user_id = %(user_id)s ORDERED BY id DESC LIMIT 15')
+    select_stmt = ('SELECT query FROM history WHERE user_id = %(user_id)s ORDER BY id DESC LIMIT 15')
     cur.execute(select_stmt, {'user_id': user_id})
     rows = cur.fetchall();
     return [row[0] for row in rows]
