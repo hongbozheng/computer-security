@@ -108,7 +108,8 @@ def addHistory(user_id, query):
     cur = db_rw.cursor()
     #TODO 5 of 6. Use cur.execute() to add a row to the history table containing the correct user_id and query
     insert_stmt = ('INSERT INTO history (user_id, query) VALUES (%s, %s)')
-    data = (insert_stmt, data)
+    data = (user_id, query)
+    cur.execute(insert_stmt, data)
     db_rw.commit()
 
 def getHistory(user_id):
