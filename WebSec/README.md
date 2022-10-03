@@ -32,6 +32,12 @@ Type the following command in `Password`
 \' OR 1=1 -- 
 ```
 #### 2.2.1.3
+##### 1. Write a python script to mine `md5` hash
+Type the following command to run the python script `2.2.1.3.py`
+```
+./2.2.1.3.py
+```
+The `passwd` got from python script is `1107388038190758764683658965752877062`
 
 #### 2.2.1.4
 ##### 1. Figure out how many columns there are in the table with the following command
