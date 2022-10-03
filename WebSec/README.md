@@ -38,7 +38,10 @@ Type the following command to run the python script `2.2.1.3.py`
 ```
 ./2.2.1.3.py
 ```
-The `passwd` got from the python script is `1107388038190758764683658965752877062`
+The `passwd` got from the python script are
+* `61873882145751551400929987756087961` [35-digit]
+* `1107388038190758764683658965752877062` [37-digit]
+
 
 #### 2.2.1.4
 ##### 1. Figure out how many columns there are in the table with the following command
