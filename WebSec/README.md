@@ -32,7 +32,8 @@ Type the following command in `Password`
 \' OR 1=1 -- 
 ```
 #### 2.2.1.3
-##### 1. Write a python script to mine `md5` hash
+Write a python script to mine `md5` hash
+
 Type the following command to run the python script `2.2.1.3.py`
 ```
 ./2.2.1.3.py
