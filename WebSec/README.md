@@ -96,8 +96,6 @@ Then, use the following command to get `secret` from Table `SECRET` with the `ha
 ```
 ' UNION SELECT NULL,NULL,NULL,secret FROM SECRET WHERE hash='3168622a73961f1d17b1a105be567177'; -- 
 ```
-## Test MP2
-Check `MP2 WebSec PDF`
 
 ## Developers
 * Hongbo Zheng [NetID: hongboz2]
