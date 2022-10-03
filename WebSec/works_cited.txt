@@ -9,3 +9,15 @@ haslib sha256() Documentation:
 
 MySQL DELETE Statement:
 1. https://www.w3schools.com/mysql/mysql_delete.asp
+
+Check # of columns, and add NULL while doing SQL Injection (UNION)
+https://www.youtube.com/watch?v=wSOlJ_duQU4
+
+MYSQL UNION Injection
+https://perspectiverisk.com/mysql-sql-injection-practical-cheat-sheet/
+
+MYSQL which MYSQL Database is currently in use
+https://makandracards.com/makandra/11313-see-which-mysql-database-is-currently-in-use
+
+MYSQL GROUP_CONCAT Function
+https://www.mysqltutorial.org/mysql-group_concat/
