@@ -79,7 +79,7 @@ Use the following command to get `message` from Table `HINT` with `id=1`
 ```
 ' UNION SELECT NULL,NULL,NULL,message FROM HINT WHERE id='1'; -- 
 ```
-The `message` with `id=1` is _go to table SECRET and get a secret string from row with your md5(netid)_
+The `message` from table `HINT` with `id=1` is _go to table SECRET and get a secret string from row with your md5(netid)_
 
 Use the following command to get all `Column` in Table `SECRET`
 ```
