@@ -101,35 +101,6 @@ Then, use the following command to get `secret` from Table `SECRET` with the `ha
 ' UNION SELECT NULL,NULL,NULL,secret FROM SECRET WHERE hash='3168622a73961f1d17b1a105be567177'; -- 
 ```
 
-#### 2.2.2.1
-Create <iframe> that displays nothing
-
-<form> `action`=http://bungle-cs461.csl.illinois.edu/login
-
-Log in with following infomation:
-* `csrfdefense`=0
-* `xssdefense`=5
-* `username`=attacker
-* `password`=l33th4x
-
-#### 2.2.2.2
-Create <iframe> that displays nothing
-
-Go to original [`Bungle` website](http://bungle-cs461.csl.illinois.edu/)
-
-Right click on search window, and click `Inspect Element`
-
-The `name`=q
-
-Right click on either `username` or `password` window, and click `Inspect Element`
-
-<input type="hidden" name="csrf_token" value="9165db97e970e7d9facd256db1fdf2f8">
-
-Submit 2 HTML <form> with function `submitForm()`
-* Both of them use `target`=ifrm
-* The first form use `action`=http://bungle-cs461.csl.illinois.edu/search
-* The second form use `action`=http://bungle-cs461.csl.illinois.edu/login
-
 ## Developers
 * Hongbo Zheng [NetID: hongboz2]
 * Max Song [NetID: mcsong2]
