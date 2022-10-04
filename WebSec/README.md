@@ -123,7 +123,7 @@ Right click on search window, and click `Inspect Element`
 
 Right click on either `username` or `password` window, and click `Inspect Element`
 
-&lt;input type="hidden" name="csrf_token" value="9165db97e970e7d9facd256db1fdf2f8"&gt;
+* &lt;input type="hidden" name="csrf_token" value="9165db97e970e7d9facd256db1fdf2f8"&gt;
 
 Submit 2 HTML &lt;form&gt; with function `submitForm()`
 * Both of them use `target`=ifrm
