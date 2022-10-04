@@ -102,9 +102,9 @@ Then, use the following command to get `secret` from Table `SECRET` with the `ha
 ```
 
 #### 2.2.2.1
-Create <iframe> that displays nothing
+Create &lt;iframe&gt; that displays nothing
 
-<form> `action`=http://bungle-cs461.csl.illinois.edu/login
+&lt;form&gt; `action`=http://bungle-cs461.csl.illinois.edu/login
 
 Log in with following infomation:
 * `csrfdefense`=0
@@ -113,19 +113,19 @@ Log in with following infomation:
 * `password`=l33th4x
 
 #### 2.2.2.2
-Create <iframe> that displays nothing
+Create &lt;iframe&gt; that displays nothing
 
 Go to original [`Bungle` website](http://bungle-cs461.csl.illinois.edu/)
 
 Right click on search window, and click `Inspect Element`
 
-The `name`=q
+* The `name`=q
 
 Right click on either `username` or `password` window, and click `Inspect Element`
 
-<input type="hidden" name="csrf_token" value="9165db97e970e7d9facd256db1fdf2f8">
+&lt;input type="hidden" name="csrf_token" value="9165db97e970e7d9facd256db1fdf2f8"&gt;
 
-Submit 2 HTML <form> with function `submitForm()`
+Submit 2 HTML &lt;form&gt; with function `submitForm()`
 * Both of them use `target`=ifrm
 * The first form use `action`=http://bungle-cs461.csl.illinois.edu/search
 * The second form use `action`=http://bungle-cs461.csl.illinois.edu/login
