@@ -23,5 +23,8 @@ MYSQL GROUP_CONCAT Function
 https://www.mysqltutorial.org/mysql-group_concat/
 
 HTML URL-encoding Reference
-https://www.eso.org/~ndelmott/url_encode.html
-https://www.w3schools.com/tags/ref_urlencode.ASP
+1. https://www.eso.org/~ndelmott/url_encode.html
+2. https://www.w3schools.com/tags/ref_urlencode.ASP
+
+HTML DOM Element getElementsByTagName()
+https://www.w3schools.com/jsref/met_element_getelementsbytagname.asp
