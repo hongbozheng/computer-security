@@ -130,6 +130,19 @@ Submit 2 HTML &lt;form&gt; with function `submitForm()`
 * The first form use `action`=http://bungle-cs461.csl.illinois.edu/search
 * The second form use `action`=http://bungle-cs461.csl.illinois.edu/login
 
+#### 2.2.3.1
+Go to Website [here](http://bungle-cs461.csl.illinois.edu/multivac/?name=INSERT%20ATTACK%20HERE)
+
+Right click on the hyperlink `Click me` and click `Inspect Element`
+
+* &lt;a href="http://cs.illinois.edu/"&gt;Click me&lt;/a&gt;
+
+Use the function `getElementsByTagName` to search for the first `a` and replace its `href` with the following
+
+* http://ece.illinois.edu/
+
+#### 2.2.3.2
+
 ## Developers
 * Hongbo Zheng [NetID: hongboz2]
 * Max Song [NetID: mcsong2]
