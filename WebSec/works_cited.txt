@@ -21,3 +21,7 @@ https://makandracards.com/makandra/11313-see-which-mysql-database-is-currently-i
 
 MYSQL GROUP_CONCAT Function
 https://www.mysqltutorial.org/mysql-group_concat/
+
+HTML URL-encoding Reference
+https://www.eso.org/~ndelmott/url_encode.html
+https://www.w3schools.com/tags/ref_urlencode.ASP
