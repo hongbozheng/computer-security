@@ -18,12 +18,16 @@
         <script type="text/javascript">
             var idx = 0
             function submitForm() {
-                if (idx == 0) {
-                    document.frm1.submit();
-                } else if (idx == 1) {
-                    document.frm2.submit();
-                } else {
-                    console.log("[INFO]: HTML <form> submitted\n")
+                switch (idx) {
+                    case 0:
+                        document.frm1.submit();
+                        break;
+                    case 1:
+                        document.frm2.submit();
+                        break;
+                    default:
+                        console.log("[INFO]: HTML <form> submitted\n")
+                        break;
                 }
                 ++idx;
             }
