@@ -4,4 +4,5 @@
 !*.*.*.py
 !*.*.*.txt
 !*.*.*.html
+.idea/
 __pycache__/
