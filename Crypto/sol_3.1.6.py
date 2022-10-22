@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# CMD: python3 sol_3.1.6.py 3.1.6_input_string.txt sol_3.1.6.txt
-# TEST_CMD: python3 sol_3.1.6.py 3.1.6_input_string.txt sol_3.1.6.hex
+# CMD: python3 sol_3.1.6.py 3.1.6_input_string.txt sol_3.1.6.hex
+# TEST_CMD: python3 sol_3.1.6.py sol_3.1.6.txt sol_3.1.6.hex
 
 import sys
 
