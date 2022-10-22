@@ -65,11 +65,11 @@ Change the `DEBUG` flag in the python script to `True` to print info to terminal
 #### 3.1.6 Weak Hashing Algorithm
 Type the following command to run the python script `sol_3.1.6.py`
 ```
-./sol_3.1.6.py 3.1.6_input_string.txt sol_3.1.6.txt
+./sol_3.1.6.py 3.1.6_input_string.txt sol_3.1.6.hex
 ```
 or
 ```
-python3 sol_3.1.6.py 3.1.6_input_string.txt sol_3.1.6.txt
+python3 sol_3.1.6.py 3.1.6_input_string.txt sol_3.1.6.hex
 ```
 Change the `DEBUG` flag in the python script to `True` to print info to terminal
 
