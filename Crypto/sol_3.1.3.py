@@ -7,8 +7,9 @@ from Crypto.Cipher import AES
 DEBUG=False
 
 def main():
-    if len(sys.argv) < 5:
+    if len(sys.argv) != 5:
         print('[USAGE] python3 <your_script.py> <ciphertext_file> <key_file> <iv_file> <output_file>')
+        exit()
 
     with open(sys.argv[1], 'r') as cipher, open(sys.argv[2], 'r') as key, open(sys.argv[3], 'r') as iv:
         key_byte = bytes.fromhex(key.read().strip())
