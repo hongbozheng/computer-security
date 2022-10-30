@@ -11,9 +11,10 @@ def main():
         exit()
 
     with open(sys.argv[1], 'r') as cipher, open(sys.argv[2], 'r') as key:
-        key_str = key.read()
-        alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        cipher_str = cipher.read()
+        key_str = key.read().strip()
+        cipher_str = cipher.read().strip()
+
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     if DEBUG:
         print('[KEY]:     %s'%key_str)
