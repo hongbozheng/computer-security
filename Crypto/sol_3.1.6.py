@@ -4,7 +4,7 @@
 
 import sys
 
-DEBUG=False
+DEBUG=0
 
 def WHA(byte_str):
     mask = 0x3FFFFFFF
