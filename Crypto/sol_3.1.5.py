@@ -3,7 +3,7 @@
 
 import sys
 
-DEBUG=False
+DEBUG=0
 
 def main():
     if len(sys.argv) != 5:
@@ -20,10 +20,11 @@ def main():
         print('[MOD_INT]:         %d'%modulo_int)
         print('[CIPHER_INT]:      %d'%cipher_int)
 
+    decrypt = pow(cipher_int, key_int, modulo_int)
+    if DEBUG: print('[DECRYPT_HEX_STR]: %s' % str(hex(decrypt)[2:]))
+
     with open(sys.argv[4], 'w') as out:
-        decrypt = pow(cipher_int, key_int, modulo_int)
         out.write(str(hex(decrypt)[2:]))
-    if DEBUG: print('[DECRYPT_HEX_STR]: %s'%str(hex(decrypt)[2:]))
 
 if __name__ == '__main__':
     main()
