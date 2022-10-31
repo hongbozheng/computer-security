@@ -10,7 +10,7 @@ DEBUG=0
 def main():
     if len(sys.argv) != 4:
         print('[USAGE]: python3 <your_script.py> <query_file> <command3_file> <output_file>')
-        exit()
+        exit(1)
 
     with open(sys.argv[1], 'r') as query_file, open(sys.argv[2], 'r') as cmd_file:
         query = query_file.read().strip()
