@@ -104,4 +104,3 @@ def selectors():
                            for i in range(len(defenseList)))
     return FormsDict(xssoptions=getSelector(xssDefenses,xssDefense),
                      csrfoptions=getSelector(csrfDefenses,csrfDefense))
-
