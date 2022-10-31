@@ -2,14 +2,14 @@
 
 from Crypto.Cipher import AES
 
-AES_WEAK_CIPHER_HEX_STR='3.1.4_aes_weak_ciphertext.hex'
+AES_WEAK_CIPHER_HEX='3.1.4_aes_weak_ciphertext.hex'
 KEY_BIT=256
 BITS=KEY_BIT-251
 
 def main():
     iv_byte = bytes.fromhex('%032X'%0)
-    with open(AES_WEAK_CIPHER_HEX_STR, 'r') as cipher_hex_str_file:
-        cipher_byte = bytes.fromhex(cipher_hex_str_file.read().strip())
+    with open(AES_WEAK_CIPHER_HEX, 'r') as cipher_hex_file:
+        cipher_byte = bytes.fromhex(cipher_hex_file.read().strip())
 
     for i in range(2**BITS):
         key = '%064X'%i
