@@ -17,7 +17,7 @@ def main():
         if re.search(regex, str(m.digest()), re.I):
             print('[PASSWORD]: %s'%str_)
             break
-       i+=1
+        i+=1
 
 if __name__ == '__main__':
     main()
