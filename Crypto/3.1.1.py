@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-FILE_HEX_STR = '3.1.1_value.hex'
+HEX_STR_FILE = '3.1.1_value.hex'
 
 def main():
-    with open(FILE_HEX_STR, 'r') as f:
+    with open(HEX_STR_FILE, 'r') as f:
         hex_str = f.read().strip()
 
     int_ = int(hex_str,16)

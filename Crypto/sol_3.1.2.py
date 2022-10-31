@@ -10,26 +10,26 @@ def main():
         print('[USAGE]: python3 <your_script.py> <ciphertext_file> <key_file> <output_file>')
         exit()
 
-    with open(sys.argv[1], 'r') as cipher, open(sys.argv[2], 'r') as key:
-        key_str = key.read().strip()
-        cipher_str = cipher.read().strip()
+    with open(sys.argv[1], 'r') as cipher_file, open(sys.argv[2], 'r') as key_file:
+        key = key_file.read().strip()
+        cipher = cipher_file.read().strip()
 
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     if DEBUG:
-        print('[KEY]:     %s'%key_str)
+        print('[KEY]:     %s'%key)
         print('[ALPHA]:   %s'%alphabet)
-        print('[CIPHER]:  %s'%cipher_str)
+        print('[CIPHER]:  %s'%cipher)
         print('[DECRYPT]: ', end='')
 
-    with open(sys.argv[3], 'w') as out:
-        for char in cipher_str:
-            alpha_idx = key_str.find(char)
+    with open(sys.argv[3], 'w') as output_file:
+        for char in cipher:
+            alpha_idx = key.find(char)
             if alpha_idx >= 0:
-                out.write(alphabet[alpha_idx])
+                output_file.write(alphabet[alpha_idx])
                 if DEBUG: print(alphabet[alpha_idx], end='')
             else:
-                out.write(char)
+                output_file.write(char)
                 if DEBUG: print(char, end='')
 
 if __name__ == '__main__':

@@ -11,10 +11,10 @@ def main():
         print('[USAGE] python3 <your_script.py> <ciphertext_file> <key_file> <iv_file> <output_file>')
         exit()
 
-    with open(sys.argv[1], 'r') as cipher, open(sys.argv[2], 'r') as key, open(sys.argv[3], 'r') as iv:
-        key_byte = bytes.fromhex(key.read().strip())
-        iv_byte = bytes.fromhex(iv.read().strip())
-        cipher_byte = bytes.fromhex(cipher.read().strip())
+    with open(sys.argv[1], 'r') as cipher_file, open(sys.argv[2], 'r') as key_file, open(sys.argv[3], 'r') as iv_file:
+        key_byte = bytes.fromhex(key_file.read().strip())
+        iv_byte = bytes.fromhex(iv_file.read().strip())
+        cipher_byte = bytes.fromhex(cipher_file.read().strip())
 
     if DEBUG:
         print('[KEY_BYTE]:    %s'%key_byte)
@@ -25,8 +25,8 @@ def main():
     decrypt_byte = aes.decrypt(cipher_byte)
     if DEBUG: print('[DECRYPT_STR]: %s' % decrypt_byte.decode(encoding='UTF-8', errors='strict'))
 
-    with open(sys.argv[4], 'w') as out:
-        out.write(decrypt_byte.decode(encoding='UTF-8', errors='strict'))
+    with open(sys.argv[4], 'w') as output_file:
+        output_file.write(decrypt_byte.decode(encoding='UTF-8', errors='strict'))
 
 if __name__ == '__main__':
     main()
