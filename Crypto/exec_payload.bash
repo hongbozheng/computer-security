@@ -126,7 +126,7 @@ printf "[INFO]: %s %s\n" $SHA256_EVIL_FILE $SHA256_HASH_EVIL_FILE
 printf "[INFO]: Checking if the SHA256 Hash are different...\n"
 if [ "$SHA256_HASH_GOOD_FILE" == "$SHA256_HASH_EVIL_FILE" ]
 then
-    printf "[ERROR]: The SHA256 Hash of file %s and file %s are different. Quit.\n" $GOOD_FILE $EVIL_FILE
+    printf "[ERROR]: The SHA256 Hash of file %s and file %s are the same. Quit.\n" $GOOD_FILE $EVIL_FILE
     exit 1
 fi
 printf "[INFO]: The SHA256 Hash of file %s and file %s are different\n" $GOOD_FILE $EVIL_FILE
