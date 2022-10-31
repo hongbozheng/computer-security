@@ -17,7 +17,7 @@ def WHA(byte_str):
 def main():
     if len(sys.argv) != 3:
         print('[USAGE]: python3 <your_script.py> <file.txt> <output_file>')
-        exit(1)
+        exit()
 
     with open(sys.argv[1], 'r') as f:
         input_str = f.read().strip()

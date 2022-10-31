@@ -8,7 +8,7 @@ DEBUG=0
 def main():
     if len(sys.argv) != 4:
         print('[USAGE]: python3 <your_script.py> <ciphertext_file> <key_file> <output_file>')
-        exit(1)
+        exit()
 
     with open(sys.argv[1], 'r') as cipher_file, open(sys.argv[2], 'r') as key_file:
         key = key_file.read().strip()

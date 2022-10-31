@@ -9,7 +9,7 @@ DEBUG=0
 def main():
     if len(sys.argv) != 5:
         print('[USAGE] python3 <your_script.py> <ciphertext_file> <key_file> <iv_file> <output_file>')
-        exit(1)
+        exit()
 
     with open(sys.argv[1], 'r') as cipher_file, open(sys.argv[2], 'r') as key_file, open(sys.argv[3], 'r') as iv_file:
         key_byte = bytes.fromhex(key_file.read().strip())
