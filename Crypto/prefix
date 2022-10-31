@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: latin-1 -*-
+
+from hashlib import sha256
+
+BENIGN_PAYLOAD='I come in peace.'
+MALICIOUS_PAYLOAD='Prepare to be destroyed!'
+blob="""

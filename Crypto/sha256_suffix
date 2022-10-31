@@ -1,0 +1,4 @@
+
+"""
+
+print(sha256(blob.encode(encoding='UTF-8',errors='strict')).hexdigest())
