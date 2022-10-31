@@ -8,7 +8,7 @@ DEBUG=0
 def main():
     if len(sys.argv) != 5:
         print('[USAGE]: python3 <your_script.py> <ciphertext_file> <key_file> <modulo_file> <output_file>')
-        exit()
+        exit(1)
 
     with open(sys.argv[1], 'r') as cipher_file, open(sys.argv[2], 'r') as key_file, open(sys.argv[3], 'r') as modulo_file:
         key_int = int(key_file.read().strip(), 16)
