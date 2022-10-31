@@ -42,25 +42,24 @@ printf "[INFO]: Finish appending file %s to file %s\n" $SHA256_SUFFIX_FILE $COL2
 printf "[INFO]: The 2 Python Scripts are %s and %s\n" $COL1_SHA256_FILE $COL2_SHA256_FILE
 
 printf "\n[INFO]: Verify that %s and %s generate different SHA256 Hash\n" $COL1_SHA256_FILE $COL2_SHA256_FILE
-printf "[INFO]: %s generate " $COL1_SHA256_FILE
-python3 $COL1_SHA256_FILE
+COL1_SHA256=$(python3 $COL1_SHA256_FILE)
 RETURN=$?
 if [ $RETURN -ne 0 ]
 then
     printf "[ERROR]: Failed to execute python script %s. Quit.\n" $COL1_SHA256_FILE
     exit $RETURN
 fi
-printf "[INFO]: %s generate " $COL2_SHA256_FILE
-python3 $COL2_SHA256_FILE
+printf "[INFO]: [%s] %s\n" $COL1_SHA256_FILE $COL1_SHA256
+COL2_SHA256=$(python3 $COL2_SHA256_FILE)
 RETURN=$?
 if [ $RETURN -ne 0 ]
 then
     printf "[ERROR]: Failed to execute python script %s. Quit.\n" $COL2_SHA256_FILE
     exit $RETURN
 fi
+printf "[INFO]: [%s] %s\n" $COL2_SHA256_FILE $COL2_SHA256
 printf "[INFO]: Checking if 2 SHA256 Hash are different...\n"
-RETURN=$(diff <(python3 $COL1_SHA256_FILE) <(python3 $COL2_SHA256_FILE))
-if [ "$RETURN" == "" ]
+if [ "$COL1_SHA256" == "$COL2_SHA256" ]
 then
     printf "[ERROR]: The 2 SHA256 Hash are the same. Quit.\n"
     exit $RETURN
