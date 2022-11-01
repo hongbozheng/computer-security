@@ -27,8 +27,9 @@ def strip_padding(msg):
 with open("3.2.3_ciphertext.hex") as f:
     ciphertext = bytearray(bytes.fromhex(f.read().strip()))
 print(ciphertext)
+# print(len(ciphertext))
 
-base_url = "http://172.22.159.75:8080/mp3/mcsong2/?"
+base_url = "http://172.22.159.75:8080/mp3/fa22_cs461_mcsong2/?"
 result = []
 
 for pos in range(len(ciphertext) // 16 - 1, 0, -1):
@@ -38,14 +39,30 @@ for pos in range(len(ciphertext) // 16 - 1, 0, -1):
         target_byte = prev_ciphertext[-offset]
         # print(offset)
         for guess in range(256):
-            prev_ciphertext[-offset] = guess # plaintext character
+            prev_ciphertext[-offset] = guess # 
             if(guess != target_byte):
                 fake_cipher = hexlify(prev_ciphertext) + hexlify(current_block)
                 # print(fake_cipher)
                 url = base_url + fake_cipher.decode()
                 # print(url)
                 status = get_status(url)
-                # print(status)
+                
+                if status == 404:
+                    # print(prev_ciphertext)
+                    # print(guess, target_byte)
+                    result.append(chr(guess ^ 16 ^ target_byte))
+                    print(chr(guess ^ 16 ^ target_byte))
+                    for i in range(offset):
+                        prev_ciphertext[-offset + i] = prev_ciphertext[-offset + i] ^ (16 - i) ^ (15 - i) # remaining bytes of ct 
+                    break
+            else:
+                guess = 0x10
+                fake_cipher = hexlify(prev_ciphertext) + hexlify(current_block)
+                # print(fake_cipher)
+                url = base_url + fake_cipher.decode()
+                # print(url)
+                status = get_status(url)
+                # print(guess, target_byte)
                 if status == 404:
                     result.append(chr(guess ^ 16 ^ target_byte))
                     print(chr(guess ^ 16 ^ target_byte))
@@ -56,4 +73,4 @@ for pos in range(len(ciphertext) // 16 - 1, 0, -1):
 
 result.reverse()
 # _, msg = strip_padding("".join(result))
-print(result)
+print(result) 
