@@ -30,8 +30,8 @@ def main():
         print('[WHA_HAS]:      %d'%wha_hash)
         print('[WHA_HASH_HEX]: %s'%hex(wha_hash))
 
-    with open(sys.argv[2], 'w') as output_file:
-        output_file.write(hex(wha_hash)[2:])
+    with open(sys.argv[2], 'w') as wha_hash_hex_file:
+        wha_hash_hex_file.write(hex(wha_hash)[2:])
 
 if __name__ == '__main__':
     main()
