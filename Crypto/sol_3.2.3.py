@@ -18,10 +18,13 @@ def get_status(u):
 
 def get_plaintxt(decrypted_char):
     decrypted_char.reverse()
+    if DEBUG:
+        plaintxt_pad = b''.join(bytes(i,'UTF-8') for i in decrypted_char)
+        print('[PLAINTXT_PAD]: %s'%plaintxt_pad)
     pad_num = len(decrypted_char)%HEX_16
     if pad_num == 0:
         pad_num = HEX_16
-    for i in range(pad_num):
+    for _ in range(pad_num):
         del decrypted_char[-1]
     return ''.join(decrypted_char)
 
@@ -68,9 +71,11 @@ def main():
                             ciphertxt_byte_prev[-offset+i] = ciphertxt_byte_prev[-offset+i]^(HEX_16-i)^(HEX_16-1-i)
                         break
 
+    # decrypted_char = ['\x0f', '\r', 'e', 'n', 'g', 'i', 's', 'e', 'D', ' ', 'r', 'a', 'e', 'w', 's', 'n', 'e', 'M', ' ', 'd', 'e', 'm', 'a', 'n', ' ', 's', 'a', 'w', ' ', 'r', 'a', 'e', 'w', 's', 't', 'r', 'o', 'p', 's', ' ', 'e', 'u', 'l', 'b', ' ', '&', ' ', 'e', 't', 'i', 'h', 'w', ' ', ',', 'd', 'e', 'r', ' ', 's', 'i', 'h', ' ', 'r', 'o', 'f', ' ', 's', 'u', 'o', 'm', 'a', 'f', ' ', 'r', 'e', 'i', 'h', 't', 'o', 'l', 'c', ' ', 's', 'i', 'h', 't', ' ', '5', '9', '9', '1', ' ', 'n', 'I', ' ', ' ', ')', '"', 'l', 'a', 't', 'i', 'p', 's', 'o', 'H', ' ', 'l', 'a', 'r', 'e', 'n', 'e', 'G', '"', ' ', 'n', 'o', ' ', 'n', 'a', 'g', 'r', 'o', 'M', ' ', 'e', 'o', 'l', 'h', 'C', ' ', 'r', 'e', 'n', 'g', 'i', 's', 'e', 'd', ' ', 'n', 'o', 'i', 'h', 's', 'a', 'f', ' ', 'y', 'a', 'l', 'p', ' ', 'I', ' ', '&', ' ', 'y', 'e', 'l', 'i', 'm', 'S', ' ', 'a', 'v', 'a', 'T', ' ', 'm', "'", 'I', ' ', ',', 'i', 'H', '(']
+
     if DEBUG: print('[INFO]: Finish Decryption')
     plaintxt = get_plaintxt(decrypted_char=decrypted_char)
-    if DEBUG: print('[PLAINTXT]: %s'%plaintxt)
+    if DEBUG: print('[PLAINTXT]:       %s'%plaintxt)
 
     with open(sys.argv[2], 'w') as decrypted_msg_file:
         decrypted_msg_file.write(plaintxt)
