@@ -17,16 +17,16 @@ def main():
         ciphertxt_byte = bytes.fromhex(ciphertxt_file.read().strip())
 
     if DEBUG:
-        print('[KEY_BYTE]:    %s'%key_byte)
-        print('[IV_BYTE]:     %s'%iv_byte)
-        print('[CIPHER_BYTE]: %s'%ciphertxt_byte)
+        print('[KEY_BYTE]:       %s'%key_byte)
+        print('[IV_BYTE]:        %s'%iv_byte)
+        print('[CIPHERTXT_BYTE]: %s'%ciphertxt_byte)
 
     aes = AES.new(key=key_byte, mode=AES.MODE_CBC, iv=iv_byte)
-    decrypt_byte = aes.decrypt(ciphertxt_byte)
-    if DEBUG: print('[DECRYPT_STR]: %s' % decrypt_byte.decode(encoding='UTF-8', errors='strict'))
+    decrypted_byte = aes.decrypt(ciphertxt_byte)
+    if DEBUG: print('[DECRYPT_STR]: %s'%decrypted_byte.decode(encoding='UTF-8', errors='strict'))
 
     with open(sys.argv[4], 'w') as decrypted_msg_file:
-        decrypted_msg_file.write(decrypt_byte.decode(encoding='UTF-8', errors='strict'))
+        decrypted_msg_file.write(decrypted_byte.decode(encoding='UTF-8', errors='strict'))
 
 if __name__ == '__main__':
     main()

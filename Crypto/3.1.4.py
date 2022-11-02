@@ -18,10 +18,10 @@ def main():
     for i in range(2**BITS):
         key = '%064X'%i
         key_byte = bytes.fromhex(key)
-        print('[KEY]:         %s'%key)
-        print('[KEY_BYTE]:    %s'%key_byte)
-        print('[IV_BYTE]:     %s'%iv_byte)
-        print('[CIPHER_BYTE]: %s'%ciphertxt_byte)
+        print('[KEY]:            %s'%key)
+        print('[KEY_BYTE]:       %s'%key_byte)
+        print('[IV_BYTE]:        %s'%iv_byte)
+        print('[CIPHERTXT_BYTE]: %s'%ciphertxt_byte)
         aes = AES.new(key=key_byte, mode=AES.MODE_CBC, iv=iv_byte)
         try:
             print('[DECRYPT]:     %s'%aes.decrypt(ciphertxt_byte).decode(encoding='UTF-8', errors='strict'))

@@ -16,15 +16,15 @@ def main():
         ciphertxt_int = int(ciphertxt_file.read().strip(), 16)
 
     if DEBUG:
-        print('[KEY_INT]:         %d'%key_int)
-        print('[MOD_INT]:         %d'%modulo_int)
-        print('[CIPHER_INT]:      %d'%ciphertxt_int)
+        print('[KEY_INT]:            %d'%key_int)
+        print('[MOD_INT]:            %d'%modulo_int)
+        print('[CIPHERTXT_INT]:      %d'%ciphertxt_int)
 
-    decrypt = pow(ciphertxt_int, key_int, modulo_int)
-    if DEBUG: print('[DECRYPT_HEX_STR]: %s' % str(hex(decrypt)[2:]))
+    decrypted_int = pow(ciphertxt_int, key_int, modulo_int)
+    if DEBUG: print('[DECRYPT_HEX_STR]: %s'%str(hex(decrypted_int)[2:]))
 
     with open(sys.argv[4], 'w') as decrypted_hex_file:
-        decrypted_hex_file.write(str(hex(decrypt)[2:]))
+        decrypted_hex_file.write(str(hex(decrypted_int)[2:]))
 
 if __name__ == '__main__':
     main()
