@@ -10,20 +10,20 @@ def main():
         print('[USAGE]: python3 <your_script.py> <ciphertext_file> <key_file> <output_file>')
         exit(1)
 
-    with open(sys.argv[1], 'r') as cipher_file, open(sys.argv[2], 'r') as key_file:
+    with open(sys.argv[1], 'r') as ciphertxt_file, open(sys.argv[2], 'r') as key_file:
         key = key_file.read().strip()
-        cipher = cipher_file.read().strip()
+        ciphertxt = ciphertxt_file.read().strip()
 
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     if DEBUG:
         print('[KEY]:     %s'%key)
         print('[ALPHA]:   %s'%alphabet)
-        print('[CIPHER]:  %s'%cipher)
+        print('[CIPHER]:  %s'%ciphertxt)
         print('[DECRYPT]: ', end='')
 
     with open(sys.argv[3], 'w') as output_file:
-        for char in cipher:
+        for char in ciphertxt:
             alpha_idx = key.find(char)
             if alpha_idx >= 0:
                 output_file.write(alphabet[alpha_idx])

@@ -11,18 +11,18 @@ def main():
         print('[USAGE] python3 <your_script.py> <ciphertext_file> <key_file> <iv_file> <output_file>')
         exit(1)
 
-    with open(sys.argv[1], 'r') as cipher_file, open(sys.argv[2], 'r') as key_file, open(sys.argv[3], 'r') as iv_file:
+    with open(sys.argv[1], 'r') as ciphertxt_file, open(sys.argv[2], 'r') as key_file, open(sys.argv[3], 'r') as iv_file:
         key_byte = bytes.fromhex(key_file.read().strip())
         iv_byte = bytes.fromhex(iv_file.read().strip())
-        cipher_byte = bytes.fromhex(cipher_file.read().strip())
+        ciphertxt_byte = bytes.fromhex(ciphertxt_file.read().strip())
 
     if DEBUG:
         print('[KEY_BYTE]:    %s'%key_byte)
         print('[IV_BYTE]:     %s'%iv_byte)
-        print('[CIPHER_BYTE]: %s'%cipher_byte)
+        print('[CIPHER_BYTE]: %s'%ciphertxt_byte)
 
     aes = AES.new(key=key_byte, mode=AES.MODE_CBC, iv=iv_byte)
-    decrypt_byte = aes.decrypt(cipher_byte)
+    decrypt_byte = aes.decrypt(ciphertxt_byte)
     if DEBUG: print('[DECRYPT_STR]: %s' % decrypt_byte.decode(encoding='UTF-8', errors='strict'))
 
     with open(sys.argv[4], 'w') as output_file:

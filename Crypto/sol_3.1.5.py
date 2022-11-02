@@ -10,17 +10,17 @@ def main():
         print('[USAGE]: python3 <your_script.py> <ciphertext_file> <key_file> <modulo_file> <output_file>')
         exit(1)
 
-    with open(sys.argv[1], 'r') as cipher_file, open(sys.argv[2], 'r') as key_file, open(sys.argv[3], 'r') as modulo_file:
+    with open(sys.argv[1], 'r') as ciphertxt_file, open(sys.argv[2], 'r') as key_file, open(sys.argv[3], 'r') as modulo_file:
         key_int = int(key_file.read().strip(), 16)
         modulo_int = int(modulo_file.read().strip(), 16)
-        cipher_int = int(cipher_file.read().strip(), 16)
+        ciphertxt_int = int(ciphertxt_file.read().strip(), 16)
 
     if DEBUG:
         print('[KEY_INT]:         %d'%key_int)
         print('[MOD_INT]:         %d'%modulo_int)
         print('[CIPHER_INT]:      %d'%cipher_int)
 
-    decrypt = pow(cipher_int, key_int, modulo_int)
+    decrypt = pow(ciphertxt_int, key_int, modulo_int)
     if DEBUG: print('[DECRYPT_HEX_STR]: %s' % str(hex(decrypt)[2:]))
 
     with open(sys.argv[4], 'w') as output_file:
