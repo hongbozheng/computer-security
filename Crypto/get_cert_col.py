@@ -20,8 +20,8 @@ def main():
         print('[CERT_BYTE]:        %s'%cert_byte)
         print('[CERT_PREFIX_BYTE]: %s'%cert_byte_prefix)
 
-    with open(sys.argv[2], 'wb') as cert_byte_prefix_file:
-        cert_byte_prefix_file.write(cert_byte_prefix)
+    with open(sys.argv[2], 'wb') as cert_prefix_file:
+        cert_prefix_file.write(cert_byte_prefix)
 
     CERT_PREFIX_FILE=sys.argv[2]
     FASTCOLL=sys.argv[3]
@@ -35,7 +35,7 @@ def main():
         cert_col1 = cert_col1_file.read()
         cert_col2 = cert_col2_file.read()
 
-    print(Crypto.Util.number.size()
+    print(Crypto.Util.number.size(int.from_bytes(cert_col1,'little')))
 
 if __name__ == '__main__':
     main()
