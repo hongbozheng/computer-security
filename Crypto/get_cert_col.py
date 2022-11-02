@@ -18,7 +18,7 @@ def main():
 
     if DEBUG:
         print('[CERT_BYTE]:        %s'%cert_byte)
-        print('[CERT_PREFIX_BYTE]: %s'%cert_byte_prefix)
+        print('[CERT_PREFIX_BYTE]: %s\n'%cert_byte_prefix)
 
     with open(sys.argv[2], 'wb') as cert_prefix_file:
         cert_prefix_file.write(cert_byte_prefix)
@@ -28,14 +28,20 @@ def main():
     CERT_COL1_FILE=sys.argv[4]
     CERT_COL2_FILE=sys.argv[5]
     CERT_COL_CMD='./'+FASTCOLL+' -p '+CERT_PREFIX_FILE+' -o '+CERT_COL1_FILE+' '+CERT_COL2_FILE
-    #print(MD5_CMD)
+    print('[INFO]: Executing fastcoll...')
     subprocess.call(CERT_COL_CMD, shell=True)
+    print('[INFO]: Finish executing fastcoll\n')
 
+    print('[INFO]: Checking 2 cert_col str length in bit...')
     with open(CERT_COL1_FILE, 'rb') as cert_col1_file, open(CERT_COL2_FILE, 'rb') as cert_col2_file:
         cert_col1 = cert_col1_file.read()
         cert_col2 = cert_col2_file.read()
 
-    print(Crypto.Util.number.size(int.from_bytes(cert_col1,'little')))
+    cert_col1_bit = Crypto.Util.number.size(int.from_bytes(cert_col1[256:],'big'))
+    cert_col2_bit = Crypto.Util.number.size(int.from_bytes(cert_col2[256:],'big'))
+    
+    print('[CERT_COL1_#bit]: %d'%cert_col1_bit)
+    print('[CERT_COL2_#bit]: %d'%cert_col2_bit)
 
 if __name__ == '__main__':
     main()
