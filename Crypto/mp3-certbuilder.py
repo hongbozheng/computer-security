@@ -32,18 +32,21 @@ ECE422_CA_KEY, _ = make_privkey(100798379326803138907256747723290553122501628306
 # - 'not_valid_before' date must must be March 1
 # - 'not_valid_after'  date must must be March 27
 # Other fields (such as pseudonym) can be whatever you want, we won't check them
-def make_cert(netid, pubkey, ca_key = ECE422_CA_KEY, serial=x509.random_serial_number()):
+
+# def make_cert(netid, pubkey, ca_key = ECE422_CA_KEY, serial=x509.random_serial_number()):
+def make_cert(netid, pubkey, ca_key = ECE422_CA_KEY, serial=int('26e6b8f11fd1c564d5f14c5a021ac6effdf6f3ac',16)):
     builder = x509.CertificateBuilder()
-    builder = builder.not_valid_before(datetime.datetime(2017, 3, 1))
-    builder = builder.not_valid_after (datetime.datetime(2017, 3, 27))
+    builder = builder.not_valid_before(datetime.datetime(2017, 3, 1))       # CAN'T MODIFY
+    builder = builder.not_valid_after (datetime.datetime(2017, 3, 27))      # CAN'T MODIFY
     builder = builder.subject_name(x509.Name([
-        x509.NameAttribute(NameOID.COMMON_NAME, str(netid)),
-        x509.NameAttribute(NameOID.PSEUDONYM, u'unused'),
-        x509.NameAttribute(NameOID.COUNTRY_NAME, u'US'),
-        x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, u'Illinois'),
+        x509.NameAttribute(NameOID.COMMON_NAME, str(netid)),                # CAN'T MODIFY
+        x509.NameAttribute(NameOID.PSEUDONYM, u'x'*59),
+        # x509.NameAttribute(NameOID.PSEUDONYM, u'unused'),
+        x509.NameAttribute(NameOID.COUNTRY_NAME, u'US'),                    # CAN'T MODIFY
+        x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, u'Illinois'),    # CAN'T MODIFY
     ]))
     builder = builder.issuer_name(x509.Name([
-        x509.NameAttribute(NameOID.COMMON_NAME, u'ece422'),
+        x509.NameAttribute(NameOID.COMMON_NAME, u'ece422'),                 # CAN'T MODIFY
 ]))
     builder = builder.serial_number(serial)
     builder = builder.public_key(pubkey)
