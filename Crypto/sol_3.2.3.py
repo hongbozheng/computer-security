@@ -29,7 +29,7 @@ with open("3.2.3_ciphertext.hex") as f:
 print(ciphertext)
 # print(len(ciphertext))
 
-base_url = "http://172.22.159.75:8080/mp3/fa22_cs461_mcsong2/?"
+base_url = "http://172.22.159.75:8080/mp3/fa22_cs461_hongboz2/?"
 result = []
 
 for pos in range(len(ciphertext) // 16 - 1, 0, -1):
@@ -55,20 +55,20 @@ for pos in range(len(ciphertext) // 16 - 1, 0, -1):
                     for i in range(offset):
                         prev_ciphertext[-offset + i] = prev_ciphertext[-offset + i] ^ (16 - i) ^ (15 - i) # remaining bytes of ct 
                     break
-            else:
-                guess = 0x10
-                fake_cipher = hexlify(prev_ciphertext) + hexlify(current_block)
-                # print(fake_cipher)
-                url = base_url + fake_cipher.decode()
-                # print(url)
-                status = get_status(url)
-                # print(guess, target_byte)
-                if status == 404:
-                    result.append(chr(guess ^ 16 ^ target_byte))
-                    print(chr(guess ^ 16 ^ target_byte))
-                    for i in range(offset):
-                        prev_ciphertext[-offset + i] = prev_ciphertext[-offset + i] ^ (16 - i) ^ (15 - i) # remaining bytes of ct 
-                    break
+            # else:
+            #     guess = 0x10
+            #     fake_cipher = hexlify(prev_ciphertext) + hexlify(current_block)
+            #     # print(fake_cipher)
+            #     url = base_url + fake_cipher.decode()
+            #     # print(url)
+            #     status = get_status(url)
+            #     # print(guess, target_byte)
+            #     if status == 404:
+            #         result.append(chr(guess ^ 16 ^ target_byte))
+            #         print(chr(guess ^ 16 ^ target_byte))
+            #         for i in range(offset):
+            #             prev_ciphertext[-offset + i] = prev_ciphertext[-offset + i] ^ (16 - i) ^ (15 - i) # remaining bytes of ct
+            #         break
 
 
 result.reverse()
