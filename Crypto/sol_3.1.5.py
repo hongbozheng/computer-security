@@ -18,7 +18,7 @@ def main():
     if DEBUG:
         print('[KEY_INT]:         %d'%key_int)
         print('[MOD_INT]:         %d'%modulo_int)
-        print('[CIPHER_INT]:      %d'%cipher_int)
+        print('[CIPHER_INT]:      %d'%ciphertxt_int)
 
     decrypt = pow(ciphertxt_int, key_int, modulo_int)
     if DEBUG: print('[DECRYPT_HEX_STR]: %s' % str(hex(decrypt)[2:]))
