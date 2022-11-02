@@ -23,8 +23,8 @@ def main():
     decrypt = pow(ciphertxt_int, key_int, modulo_int)
     if DEBUG: print('[DECRYPT_HEX_STR]: %s' % str(hex(decrypt)[2:]))
 
-    with open(sys.argv[4], 'w') as output_file:
-        output_file.write(str(hex(decrypt)[2:]))
+    with open(sys.argv[4], 'w') as decrypted_hex_file:
+        decrypted_hex_file.write(str(hex(decrypt)[2:]))
 
 if __name__ == '__main__':
     main()

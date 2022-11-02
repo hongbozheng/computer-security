@@ -25,8 +25,8 @@ def main():
     decrypt_byte = aes.decrypt(ciphertxt_byte)
     if DEBUG: print('[DECRYPT_STR]: %s' % decrypt_byte.decode(encoding='UTF-8', errors='strict'))
 
-    with open(sys.argv[4], 'w') as output_file:
-        output_file.write(decrypt_byte.decode(encoding='UTF-8', errors='strict'))
+    with open(sys.argv[4], 'w') as decrypted_msg_file:
+        decrypted_msg_file.write(decrypt_byte.decode(encoding='UTF-8', errors='strict'))
 
 if __name__ == '__main__':
     main()

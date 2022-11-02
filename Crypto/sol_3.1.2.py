@@ -22,14 +22,14 @@ def main():
         print('[CIPHER]:  %s'%ciphertxt)
         print('[DECRYPT]: ', end='')
 
-    with open(sys.argv[3], 'w') as output_file:
+    with open(sys.argv[3], 'w') as decrypted_msg_file:
         for char in ciphertxt:
             alpha_idx = key.find(char)
             if alpha_idx >= 0:
-                output_file.write(alphabet[alpha_idx])
+                decrypted_msg_file.write(alphabet[alpha_idx])
                 if DEBUG: print(alphabet[alpha_idx], end='')
             else:
-                output_file.write(char)
+                decrypted_msg_file.write(char)
                 if DEBUG: print(char, end='')
 
 if __name__ == '__main__':
