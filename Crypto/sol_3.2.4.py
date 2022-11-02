@@ -68,9 +68,9 @@ def main():
         print('[USAGE]: ./sol_3.2.4.py <ciphertext.enc.asc_file> <moduli.hex_file> <decrypted_msg_file>')
         exit(1)
 
-    with open(sys.argv[1], 'r') as ciphertxt_file, open(sys.argv[2], 'r') as moduli_hex_file:
-        ciphertxt = ciphertxt_file.read()
-        if DEBUG: print('[CIPHER]: %s'%ciphertxt)
+    with open(sys.argv[1], 'r') as ciphertxt_enc_asc_file, open(sys.argv[2], 'r') as moduli_hex_file:
+        ciphertxt_enc_asc = ciphertxt_enc_asc_file.read()
+        if DEBUG: print('[CIPHER]: %s'%ciphertxt_enc_asc)
         if DEBUG: print('[INFO]: Read & Convert MODULI from HEX to INT')
         moduli = [int(i.strip(),16) for i in moduli_hex_file.readlines()]
 
@@ -83,7 +83,7 @@ def main():
     if DEBUG: print('[INFO]: Finish Calculating PRIVATE KEY')
 
     if DEBUG: print('[INFO]: Decrypting Final Result...')
-    decrypted_byte = get_result(pvt_key=pvt_key, cipher=ciphertxt)
+    decrypted_byte = get_result(pvt_key=pvt_key, cipher=ciphertxt_enc_asc)
     decrypted_msg = decrypted_byte.decode(encoding='UTF-8',errors='strict')
     if DEBUG:
         print('[PLAINBYTE]: %s'%decrypted_byte)
