@@ -29,7 +29,7 @@ def main():
     md5_hash.update(cmd3)
 
     if DEBUG:
-        print('[CMD_MD5_HASH]:  %s'%md5_hash.hexdigest())
+        print('[CMD3_MD5_HASH]: %s'%md5_hash.hexdigest())
         print('[PADDING_BYTE]:  %s'%pad_byte)
         print('[NEW_QUERY]:     %s'%('token='+md5_hash.hexdigest()+'&'+usr_cmd1_cmd2+urllib.parse.quote_from_bytes(bs=pad_byte,safe='/')+cmd3))
 
