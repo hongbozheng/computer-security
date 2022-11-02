@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-# CMD: ./sol_3.2.4.py 3.2.4_ciphertext.enc.asc moduli.hex
-
+# CMD: ./sol_3.2.4.py 3.2.4_ciphertext.enc.asc moduli.hex sol_3.2.4.txt
 '''
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+REMEMBER TO EITHER 'ADD A NEW LINE IN FILE <3.2.4_ciphertext.enc.asc>'
+OR REMOVE THE '\n' CHARACTER FROM THE VARIABLE 'encrypt_footer' IN FILE <pbp.py>
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 Reference:
 get_product_tree(int_list): https://facthacks.cr.yp.to/product.html
 get_rem_tree(int,int_list): https://facthacks.cr.yp.to/remainder.html
@@ -60,13 +64,13 @@ def get_result(pvt_key, cipher):
     return plaintext
 
 def main():
-    if len(sys.argv) != 3:
-        print('[USAGE]: ./sol_3.2.4.py <ciphertext.enc.asc_file> <moduli.hex_file>')
+    if len(sys.argv) != 4:
+        print('[USAGE]: ./sol_3.2.4.py <ciphertext.enc.asc_file> <moduli.hex_file> <decrypted_msg_file>')
         exit(1)
 
-    with open(sys.argv[1], 'r') as cipher_file, open(sys.argv[2], 'r') as moduli_hex_file:
-        cipher = cipher_file.read()
-        if DEBUG: print('[CIPHER]: %s'%cipher)
+    with open(sys.argv[1], 'r') as ciphertxt_file, open(sys.argv[2], 'r') as moduli_hex_file:
+        ciphertxt = ciphertxt_file.read()
+        if DEBUG: print('[CIPHER]: %s'%ciphertxt)
         if DEBUG: print('[INFO]: Read & Convert MODULI from HEX to INT')
         moduli = [int(i.strip(),16) for i in moduli_hex_file.readlines()]
 
@@ -79,10 +83,14 @@ def main():
     if DEBUG: print('[INFO]: Finish Calculating PRIVATE KEY')
 
     if DEBUG: print('[INFO]: Decrypting Final Result...')
-    plaintext = get_result(pvt_key=pvt_key, cipher=cipher)
+    decrypted_byte = get_result(pvt_key=pvt_key, cipher=ciphertxt)
+    decrypted_msg = decrypted_byte.decode(encoding='UTF-8',errors='strict')
+    if DEBUG:
+        print('[PLAINBYTE]: %s'%decrypted_byte)
+        print('[PLAINTEXT]: %s'%decrypted_msg)
 
-    if DEBUG: print('[PLAIN_BYTE]: %s'%plaintext)
-    if DEBUG: print('[PLAIN_TEXT]: %s'%plaintext.decode(encoding='UTF-8',errors='strict'))
+    with open(sys.argv[3], 'w') as decrypted_msg_file:
+        decrypted_msg_file.write(decrypted_msg)
 
 if __name__ == '__main__':
     main()
