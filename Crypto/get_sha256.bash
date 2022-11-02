@@ -2,7 +2,7 @@
 
 FASTCOLL="fastcoll"
 FASTCOLL_DIR="fastcoll_v1.0.0.5-1_source/"
-PREFIX_FILE="prefix"
+SHA256_PREFIX_FILE="sha256_prefix"
 COL1_FILE="col1"
 COL2_FILE="col2"
 SHA256_SUFFIX_FILE="sha256_suffix"
@@ -10,10 +10,10 @@ COL1_SHA256_FILE="col1_sha256.py"
 COL2_SHA256_FILE="col2_sha256.py"
 PAYLOAD_SUFFIX="payload_suffix"
 
-printf "[INFO]: Using %s to generate 2 files with the same MD5 hash that both begin with %s\n" $FASTCOLL $PREFIX_FILE
+printf "[INFO]: Using %s to generate 2 files with the same MD5 hash that both begin with %s\n" $FASTCOLL $SHA256_PREFIX_FILE
 
 printf "[INFO]: Executing %s...\n\n" $FASTCOLL
-./$FASTCOLL_DIR$FASTCOLL -p $PREFIX_FILE -o $COL1_FILE $COL2_FILE
+./$FASTCOLL_DIR$FASTCOLL -p $SHA256_PREFIX_FILE -o $COL1_FILE $COL2_FILE
 RETURN=$?
 if [ $RETURN -ne 0 ]
 then
