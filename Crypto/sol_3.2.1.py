@@ -5,32 +5,36 @@ import sys
 import urllib.parse
 from pymd5 import md5, padding
 
-DEBUG=0
+DEBUG=1
 
 def main():
     if len(sys.argv) != 4:
         print('[USAGE]: python3 <your_script.py> <query_file> <command3_file> <output_file>')
         exit(1)
 
-    with open(sys.argv[1], 'r') as query_file, open(sys.argv[2], 'r') as cmd_file:
+    with open(sys.argv[1], 'r') as query_file, open(sys.argv[2], 'r') as cmd3_file:
         query = query_file.read().strip()
-        cmd = cmd_file.read().strip()
-        token = (query.split('&')[0]).split('=')[1]
-        user = 'user=' + query.split('user=')[1]
+        cmd3 = cmd3_file.read().strip()
+    token = (query.split(sep='&', maxsplit=1)[0]).split(sep='=')[1]
+    usr_cmd1_cmd2 = query.split(sep='&', maxsplit=1)[1]
 
     if DEBUG:
+        print('[QUERY]:         %s'%query)
         print('[TOKEN]:         %s'%token)
-        print('[USER]:          %s'%user)
+        print('[USR_CMD1_CMD2]: %s'%usr_cmd1_cmd2)
+        print('[CMD3]:          %s'%cmd3)
 
+    pad_byte = padding((len(usr_cmd1_cmd2)+8)*8)
     md5_hash = md5(state=token, count=512)
-    md5_hash.update(cmd)
+    md5_hash.update(cmd3)
+
     if DEBUG:
         print('[CMD_MD5_HASH]:  %s'%md5_hash.hexdigest())
-        print('[PADDING_BYTE]:  %s'%padding((len(user)+8)*8))
-        print('[NEW_QUERY]:     '+'token='+md5_hash.hexdigest()+'&'+user+urllib.parse.quote_from_bytes(bs=padding((len(user)+8)*8),safe='/')+cmd)
+        print('[PADDING_BYTE]:  %s'%pad_byte)
+        print('[NEW_QUERY]:     %s'%('token='+md5_hash.hexdigest()+'&'+usr_cmd1_cmd2+urllib.parse.quote_from_bytes(bs=pad_byte,safe='/')+cmd3))
 
     with open(sys.argv[3], 'w') as out:
-        out.write('token='+md5_hash.hexdigest()+'&'+user+urllib.parse.quote_from_bytes(bs=padding((len(user)+8)*8),safe='/')+cmd)
+        out.write('token='+md5_hash.hexdigest()+'&'+usr_cmd1_cmd2+urllib.parse.quote_from_bytes(bs=pad_byte,safe='/')+cmd3)
 
 if __name__ == '__main__':
     main()
