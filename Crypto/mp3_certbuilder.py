@@ -8,6 +8,8 @@ from Crypto.Util import number
 import datetime
 import hashlib
 
+SUBJECT_PSEUDONYM_PAD=14
+
 # Utility to make a cryptography.x509 RSA key object from p and q
 def make_privkey(p, q, e=65537):
     n = p*q
@@ -40,7 +42,7 @@ def make_cert(netid, pubkey, ca_key = ECE422_CA_KEY, serial=1):
     builder = builder.not_valid_after (datetime.datetime(2017, 3, 27))      # CAN'T MODIFY
     builder = builder.subject_name(x509.Name([
         x509.NameAttribute(NameOID.COMMON_NAME, str(netid)),                # CAN'T MODIFY
-        x509.NameAttribute(NameOID.PSEUDONYM, u'x'*14),
+        x509.NameAttribute(NameOID.PSEUDONYM, u'x'*SUBJECT_PSEUDONYM_PAD),
         # x509.NameAttribute(NameOID.PSEUDONYM, u'unused'),
         x509.NameAttribute(NameOID.COUNTRY_NAME, u'US'),                    # CAN'T MODIFY
         x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, u'Illinois'),    # CAN'T MODIFY
