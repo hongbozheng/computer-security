@@ -7,7 +7,9 @@ FASTCOLL="fastcoll"
 FASTCOLL_DIR="fastcoll_v1.0.0.5-1_source/"
 CERT_COL1_FILE="cert_col1"
 CERT_COL2_FILE="cert_col2"
+CERT_A_FILE="sol_3.2.5_certA.cer"
+CERT_B_FILE="sol_3.2.5_certB.cer"
 
-printf "[INFO]: Get %s file from %s...\n" $CERT_PREFIX_FILE $CERT_FILE
-./$GET_CERT_COL $CERT_FILE $CERT_PREFIX_FILE $FASTCOLL_DIR$FASTCOLL $CERT_COL1_FILE $CERT_COL2_FILE
+printf "[INFO]: Get %s file from %s file...\n" $CERT_PREFIX_FILE $CERT_FILE
+./$GET_CERT_COL $CERT_FILE $CERT_PREFIX_FILE $FASTCOLL_DIR$FASTCOLL $CERT_COL1_FILE $CERT_COL2_FILE $CERT_A_FILE $CERT_B_FILE
 printf "[INFO]: Finish writing into %s file\n" $CERT_PREFIX_FILE
