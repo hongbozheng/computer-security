@@ -2,6 +2,7 @@
 
 GET_CERT_COL="get_cert_col.py"
 CERT_FILE="cert.cer"
+CERT_DER_FILE="cert_DER.cer"
 CERT_PREFIX_FILE="cert_prefix"
 FASTCOLL="fastcoll"
 FASTCOLL_DIR="fastcoll_v1.0.0.5-1_source/"
@@ -10,6 +11,6 @@ CERT_COL2_FILE="cert_col2"
 CERT_A_FILE="sol_3.2.5_certA.cer"
 CERT_B_FILE="sol_3.2.5_certB.cer"
 
-printf "[INFO]:     Get %s file from %s file...\n" $CERT_PREFIX_FILE $CERT_FILE
-./$GET_CERT_COL $CERT_FILE $CERT_PREFIX_FILE $FASTCOLL_DIR$FASTCOLL $CERT_COL1_FILE $CERT_COL2_FILE $CERT_A_FILE $CERT_B_FILE
-printf "[INFO]: Finish writing into %s file\n" $CERT_PREFIX_FILE
+printf "[INFO]:     Starting MAGIC script...\n"
+./$GET_CERT_COL $CERT_FILE $CERT_DER_FILE $CERT_PREFIX_FILE $FASTCOLL_DIR$FASTCOLL $CERT_COL1_FILE $CERT_COL2_FILE $CERT_A_FILE $CERT_B_FILE
+printf "[INFO]: Finish executing MAGIC script\n"
