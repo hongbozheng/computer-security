@@ -90,9 +90,8 @@ def main():
 
     print('[INFO]: Found 2 cert_col str both with length 1023 bit')
     print('---------------------------------------------------------------------------\n')
-    exit() 
+
     '''
-    
     with open(sys.argv[4], 'rb') as cert_col1_file, open(sys.argv[5], 'rb') as cert_col2_file:
         cert_col1 = cert_col1_file.read()
         cert_col2 = cert_col2_file.read()
@@ -106,7 +105,7 @@ def main():
 
     print('[CERT_COL1_#bit]: %d'%cert_col1_bitsize)
     print('[CERT_COL2_#bit]: %d\n'%cert_col2_bitsize)
-    
+
     b1 *= 2**1024
     b2 *= 2**1024
     assert Crypto.Util.number.size(b1) == 2047
