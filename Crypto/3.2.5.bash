@@ -15,4 +15,4 @@ FACTOR_B_FILE="sol_3.2.5_factorsB.hex"
 
 printf "[INFO]:     Starting MAGIC script...\n"
 ./$GET_CERT_COL $CERT_FILE $CERT_DER_FILE $CERT_PREFIX_FILE $FASTCOLL_DIR$FASTCOLL $CERT_COL1_FILE $CERT_COL2_FILE $CERT_A_FILE $CERT_B_FILE $FACTOR_A_FILE $FACTOR_B_FILE
-printf "[INFO]: Finish executing MAGIC script\n"
+printf "[INFO]:     Finish executing MAGIC script\n"
