@@ -15,6 +15,9 @@ def main():
         key_byte = bytes.fromhex(key_file.read().strip())
         iv_byte = bytes.fromhex(iv_file.read().strip())
         ciphertxt_byte = bytes.fromhex(ciphertxt_file.read().strip())
+    ciphertxt_file.close()
+    key_file.close()
+    iv_file.close()
 
     if DEBUG:
         print('[KEY_BYTE]:       %s'%key_byte)
@@ -27,6 +30,7 @@ def main():
 
     with open(sys.argv[4], 'w') as decrypted_msg_file:
         decrypted_msg_file.write(decrypted_byte.decode(encoding='UTF-8', errors='strict'))
+    decrypted_msg_file.close()
 
 if __name__ == '__main__':
     main()

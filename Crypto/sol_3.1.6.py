@@ -21,6 +21,7 @@ def main():
 
     with open(sys.argv[1], 'r') as f:
         input_str = f.read().strip()
+    f.close()
 
     byte_str = bytes(input_str, 'UTF-8')
     wha_hash = WHA(byte_str=byte_str)
@@ -32,6 +33,7 @@ def main():
 
     with open(sys.argv[2], 'w') as wha_hash_hex_file:
         wha_hash_hex_file.write(hex(wha_hash)[2:])
+    wha_hash_hex_file.close()
 
 if __name__ == '__main__':
     main()

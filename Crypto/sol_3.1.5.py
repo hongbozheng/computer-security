@@ -14,6 +14,9 @@ def main():
         key_int = int(key_file.read().strip(), 16)
         modulo_int = int(modulo_file.read().strip(), 16)
         ciphertxt_int = int(ciphertxt_file.read().strip(), 16)
+    ciphertxt_file.close()
+    key_file.close()
+    modulo_file.close()
 
     if DEBUG:
         print('[KEY_INT]:            %d'%key_int)
@@ -25,6 +28,7 @@ def main():
 
     with open(sys.argv[4], 'w') as decrypted_hex_file:
         decrypted_hex_file.write(str(hex(decrypted_int)[2:]))
+    decrypted_hex_file.close()
 
 if __name__ == '__main__':
     main()

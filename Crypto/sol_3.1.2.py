@@ -13,6 +13,8 @@ def main():
     with open(sys.argv[1], 'r') as ciphertxt_file, open(sys.argv[2], 'r') as key_file:
         key = key_file.read().strip()
         ciphertxt = ciphertxt_file.read().strip()
+    ciphertxt_file.close()
+    key_file.close()
 
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -31,6 +33,7 @@ def main():
             else:
                 decrypted_msg_file.write(char)
                 if DEBUG: print(char, end='')
+    decrypted_msg_file.close()
 
 if __name__ == '__main__':
     main()

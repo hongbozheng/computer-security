@@ -14,6 +14,7 @@ def main():
     iv_byte = bytes.fromhex('%032X'%0)
     with open(sys.argv[1], 'r') as ciphertxt_hex_file:
         ciphertxt_byte = bytes.fromhex(ciphertxt_hex_file.read().strip())
+    ciphertxt_hex_file.close()
 
     for i in range(2**BITS):
         key = '%064X'%i
@@ -29,5 +30,6 @@ def main():
             pass
         print('--------------------------------------------------------------------------------------------------------'
               '------------------------------------------')
+
 if __name__ == '__main__':
     main()
