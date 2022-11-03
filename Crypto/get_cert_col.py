@@ -34,7 +34,7 @@ def main():
     if len(sys.argv) != 8:
         print('[USAGE]: ./get_cert_prefix.py <cert.cer_file> <cert_prefix_file> <fastcoll_executable_file> <cert_col1_file> <cert_col2_file> <certA.cer_file> <certB.cer_file>')
         exit(1)
-
+    '''
     print('[INFO]:     Generating %s file with NetID %s...'%(sys.argv[1],NetID))
     while 1:
         p = Crypto.Util.number.getPrime(1024)
@@ -66,7 +66,7 @@ def main():
     CERT_COL1_FILE=sys.argv[4]
     CERT_COL2_FILE=sys.argv[5]
     CERT_COL_CMD='./'+FASTCOLL+' -p '+CERT_PREFIX_FILE+' -o '+CERT_COL1_FILE+' '+CERT_COL2_FILE
-    '''
+    
     print('[INFO]: Executing fastcoll until both 2 cert_col str length are 1023 in bit...')
     while 1:
         print('[INFO]: Executing fastcoll...')
@@ -93,7 +93,7 @@ def main():
     exit() 
     '''
     
-    with open(CERT_COL1_FILE, 'rb') as cert_col1_file, open(CERT_COL2_FILE, 'rb') as cert_col2_file:
+    with open(sys.argv[4], 'rb') as cert_col1_file, open(sys.argv[5], 'rb') as cert_col2_file:
         cert_col1 = cert_col1_file.read()
         cert_col2 = cert_col2_file.read()
     
