@@ -49,7 +49,7 @@ def main():
     with open(sys.argv[1], 'wb') as cert_file:
         cert_file.write(cert.public_bytes(Encoding.DER))
     print('[INFO]:     try the following command: openssl x509 -in %s -inform der -text -noout'%sys.argv[1])
-    print('[INFO]:     Finish generating certificate with NetID %s\n'%NetID)
+    print('[INFO]:     Finish generating %s file with NetID %s\n'%(sys.argv[1],NetID))
 
     print('[INFO]:     Parsing prefix to file %s...'%sys.argv[2])
     with open(sys.argv[2], 'wb') as cert_prefix_file:
