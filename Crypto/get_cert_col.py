@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 # CMD: ./get_cert_col.py cert.cer cert_DER.cer cer_prefix fastcoll_v1.0.0.5-1_source/fastcoll cert_col1 cert_col2 sol_3.2.5_certA.cer sol_3.2.5_certB.cer
 
+'''
+RUN ./3.2.5.bash ALSO WORKS
+CHANGE THE FLAGS BELOW TO EXECUTE THE SCRIPT PARTIALLY
+GENERATE_CERT_FILE, GENERATE_CERT_COL_FILE, LENSTRAS_ALGORITHM
+'''
+
 import sys
 import subprocess
 import Crypto.Util.number
@@ -13,8 +19,8 @@ e=65537
 MODULUS_START_ADDR=0xC0
 NetID='hongboz2'
 GENERATE_CERT_FILE=0
-GENERATE_CERT_COL_FILE=1
-LENSTRAS_ALGORITHM=0
+GENERATE_CERT_COL_FILE=0
+LENSTRAS_ALGORITHM=1
 DEBUG=1
 
 def getCoprimes():
@@ -53,12 +59,15 @@ def main():
         with open(sys.argv[1], 'wb') as cert_file, open('cert_DER.cer', 'wb') as cert_DER_file:
             cert_file.write(cert.tbs_certificate_bytes)
             cert_DER_file.write(cert.public_bytes(Encoding.DER))
+        cert_file.close()
+        cert_DER_file.close()
         print('[INFO]:     try the following command: openssl x509 -in %s -inform der -text -noout'%sys.argv[1])
         print('[INFO]:     Finish generating %s file and %s file (DER encoding) with NetID %s\n'%(sys.argv[1],sys.argv[2],NetID))
     
         print('[INFO]:     Parsing prefix to %s file...'%sys.argv[3])
         with open(sys.argv[3], 'wb') as cert_prefix_file:
             cert_prefix_file.write(cert.tbs_certificate_bytes[:MODULUS_START_ADDR])
+        cert_prefix_file.close()
 
         if DEBUG:
             print('[CERT_BYTE]:        %s'%cert.tbs_certificate_bytes)
@@ -84,6 +93,8 @@ def main():
             with open(CERT_COL1_FILE, 'rb') as cert_col1_file, open(CERT_COL2_FILE, 'rb') as cert_col2_file:
                 cert_col1 = cert_col1_file.read()
                 cert_col2 = cert_col2_file.read()
+            cert_col1_file.close()
+            cert_col2_file.close()
 
             b1 = int(cert_col1[MODULUS_START_ADDR:].hex(),16)
             b2 = int(cert_col2[MODULUS_START_ADDR:].hex(),16)
@@ -109,7 +120,9 @@ def main():
         with open(sys.argv[5], 'rb') as cert_col1_file, open(sys.argv[6], 'rb') as cert_col2_file:
             cert_col1 = cert_col1_file.read()
             cert_col2 = cert_col2_file.read()
-    
+        cert_col1_file.close()
+        cert_col2_file.close()
+
         b1 = int(cert_col1[MODULUS_START_ADDR:].hex(),16)
         b2 = int(cert_col2[MODULUS_START_ADDR:].hex(),16)
         cert_col1_bitsize = b1.bit_length()
@@ -172,6 +185,8 @@ def main():
         with open(sys.argv[7], 'wb') as certA_file, open(sys.argv[8], 'wb') as certB_file:
             certA_file.write(certA.public_bytes(Encoding.DER))
             certB_file.write(certB.public_bytes(Encoding.DER))
+        certA_file.close()
+        certB_file.close()
 
         print('[INFO]:      Finish generating 2 new certificates\n')
     
