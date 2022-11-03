@@ -66,7 +66,7 @@ def main():
     CERT_COL1_FILE=sys.argv[4]
     CERT_COL2_FILE=sys.argv[5]
     CERT_COL_CMD='./'+FASTCOLL+' -p '+CERT_PREFIX_FILE+' -o '+CERT_COL1_FILE+' '+CERT_COL2_FILE
-    
+    '''
     print('[INFO]: Executing fastcoll until both 2 cert_col str length are 1023 in bit...')
     while 1:
         print('[INFO]: Executing fastcoll...')
@@ -76,8 +76,10 @@ def main():
             cert_col1 = cert_col1_file.read()
             cert_col2 = cert_col2_file.read()
 
-        b1 = int.from_bytes(cert_col1[MODULUS_START_ADDR:],'little')
-        b2 = int.from_bytes(cert_col2[MODULUS_START_ADDR:],'little')
+        #b1 = int.from_bytes(cert_col1[MODULUS_START_ADDR:],'little')
+        #b2 = int.from_bytes(cert_col2[MODULUS_START_ADDR:],'little')
+        b1 = int(cert_col1[MODULUS_START_ADDR:].hex(),16)
+        b2 = int(cert_col2[MODULUS_START_ADDR:].hex(),16)
         cert_col1_bitsize = Crypto.Util.number.size(b1)
         cert_col2_bitsize = Crypto.Util.number.size(b2)
         print('[CERT_COL1_#bit]: %d'%cert_col1_bitsize)
@@ -88,8 +90,9 @@ def main():
 
     print('[INFO]: Found 2 cert_col str both with length 1023 bit')
     print('---------------------------------------------------------------------------\n')
-    
+    exit() 
     '''
+    
     with open(CERT_COL1_FILE, 'rb') as cert_col1_file, open(CERT_COL2_FILE, 'rb') as cert_col2_file:
         cert_col1 = cert_col1_file.read()
         cert_col2 = cert_col2_file.read()
@@ -103,8 +106,7 @@ def main():
 
     print('[CERT_COL1_#bit]: %d'%cert_col1_bitsize)
     print('[CERT_COL2_#bit]: %d\n'%cert_col2_bitsize)
-    '''
-
+    
     b1 *= 2**1024
     b2 *= 2**1024
     assert Crypto.Util.number.size(b1) == 2047
@@ -116,7 +118,7 @@ def main():
 
     b0 = getCRT(b1,b2,p1,p2)
     k,b = 0,0
-
+    
     print('[INFO]: Start running Lenstra Algorithm...')
     while(Crypto.Util.number.size(b) <= 1024):
         b = b0+k*p1*p2
