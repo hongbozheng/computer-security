@@ -15,6 +15,8 @@ def main():
     with open(sys.argv[1], 'r') as query_file, open(sys.argv[2], 'r') as cmd3_file:
         query = query_file.read().strip()
         cmd3 = cmd3_file.read().strip()
+    query_file.close()
+    cmd3_file.close()
     token = (query.split(sep='&', maxsplit=1)[0]).split(sep='=')[1]
     usr_cmd1_cmd2 = query.split(sep='&', maxsplit=1)[1]
 
@@ -35,6 +37,7 @@ def main():
 
     with open(sys.argv[3], 'w') as out:
         out.write('token='+md5_hash.hexdigest()+'&'+usr_cmd1_cmd2+urllib.parse.quote_from_bytes(bs=pad_byte,safe='/')+cmd3)
+    out.close()
 
 if __name__ == '__main__':
     main()
