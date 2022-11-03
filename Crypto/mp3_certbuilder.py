@@ -8,7 +8,7 @@ from Crypto.Util import number
 import datetime
 import hashlib
 
-SUBJECT_PSEUDONYM_PAD=14
+SUBJECT_PSEUDONYM_PAD=18
 
 # Utility to make a cryptography.x509 RSA key object from p and q
 def make_privkey(p, q, e=65537):
