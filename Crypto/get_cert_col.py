@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-# CMD: ./get_cert_col.py cert.cer cert_DER.cer cer_prefix fastcoll_v1.0.0.5-1_source/fastcoll cert_col1 cert_col2 sol_3.2.5_certA.cer sol_3.2.5_certB.cer
+# CMD: ./get_cert_col.py cert.cer cert_DER.cer cer_prefix fastcoll_v1.0.0.5-1_source/fastcoll cert_col1 cert_col2 sol_3.2.5_certA.cer sol_3.2.5_certB.cer sol_3.2.5_factorsA.hex sol_3.2.5_factorsB.hex
 
 '''
 RUN ./3.2.5.bash ALSO WORKS
+THIS SCRIPT AUTOMATICALLY RUNS EVERYTHING
+IT ALSO WRITES RESULTS INTO CORRESPONDING FILES
 CHANGE THE FLAGS BELOW TO EXECUTE THE SCRIPT PARTIALLY
 GENERATE_CERT_FILE, GENERATE_CERT_COL_FILE, LENSTRAS_ALGORITHM
 '''
@@ -30,7 +32,6 @@ def getCoprimes():
     while (p1 == p2) or (math.gcd(e, p1-1)!=1) or (math.gcd(e, p2-1)!=1):
         p1 = Crypto.Util.number.getPrime(bitsize)
         p2 = Crypto.Util.number.getPrime(bitsize)
-    
     return p1, p2
 
 def getCRT(b1, b2, p1, p2):
@@ -40,8 +41,8 @@ def getCRT(b1, b2, p1, p2):
     return -(b1*invOne*p2+b2*invTwo*p1)%N
 
 def main():
-    if len(sys.argv) != 9:
-        print('[USAGE]: ./get_cert_prefix.py <cert.cer_file> <cert_DER.cer_file> <cert_prefix_file> <fastcoll_executable_file> <cert_col1_file> <cert_col2_file> <certA.cer_file> <certB.cer_file>')
+    if len(sys.argv) != 11:
+        print('[USAGE]: ./get_cert_prefix.py <cert.cer_file> <cert_DER.cer_file> <cert_prefix_file> <fastcoll_executable_file> <cert_col1_file> <cert_col2_file> <certA.cer_file> <certB.cer_file> <factorsA.hex_file> <factorsB.hex_file>')
         exit(1)
     
     if GENERATE_CERT_FILE:
@@ -164,12 +165,21 @@ def main():
         n1 = b1+b
         n2 = b2+b
 
+        print('[INFO]: INT FORMAT of p1,q1,n1 & p2,q2,n2')
         print('[p1]:  ',p1)
         print('[q1]:  ',q1)
         print('[n1]:  ',n1)
         print('[p2]:  ',p2) 
         print('[q2]:  ',q2)
         print('[n2]:  ',n2,'\n')
+
+        print('[INFO]: HEX FORMAT of p1,q1,n1 & p2,q2,n2')
+        print('[p1]:  ', hex(p1)[2:])
+        print('[q1]:  ', hex(q1)[2:])
+        print('[n1]:  ', hex(n1)[2:])
+        print('[p2]:  ', hex(p2)[2:])
+        print('[q2]:  ', hex(q2)[2:])
+        print('[n2]:  ', hex(n2)[2:], '\n')
     
         print('[INFO]: Start generating 2 sets of privkey & pubkey...')
         privkey1 , pubkey1 = mp3_certbuilder.make_privkey(p1,q1)
@@ -181,6 +191,10 @@ def main():
         print('[MD5_CERTA]:',hashlib.md5(certA.tbs_certificate_bytes).hexdigest())
         certB = mp3_certbuilder.make_cert(NetID, pubkey2)
         print('[MD5_CERTB]:',hashlib.md5(certB.tbs_certificate_bytes).hexdigest())
+
+        if hashlib.md5(certA.tbs_certificate_bytes).hexdigest() != hashlib.md5(certB.tbs_certificate_bytes).hexdigest():
+            print('[ERROR]: Failed to generate 2 certificates with the SAME MD5 HASH')
+            exit(1)
 
         with open(sys.argv[7], 'wb') as certA_file, open(sys.argv[8], 'wb') as certB_file:
             certA_file.write(certA.public_bytes(Encoding.DER))
