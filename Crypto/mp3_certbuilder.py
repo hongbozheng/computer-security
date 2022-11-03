@@ -48,7 +48,7 @@ def make_cert(netid, pubkey, ca_key = ECE422_CA_KEY, serial=int('26e6b8f11fd1c56
     builder = builder.issuer_name(x509.Name([
         x509.NameAttribute(NameOID.COMMON_NAME, u'ece422'),                 # CAN'T MODIFY
 ]))
-    builder = builder.serial_number(serial)
+    builder = builder.serial_number(int('26e6b8f11fd1c564d5f14c5a021ac6effdf6f3ac',16))
     builder = builder.public_key(pubkey)
     cert = builder.sign(private_key=ECE422_CA_KEY, algorithm=hashes.MD5(), backend=default_backend())
     return cert
