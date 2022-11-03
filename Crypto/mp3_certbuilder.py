@@ -34,7 +34,7 @@ ECE422_CA_KEY, _ = make_privkey(100798379326803138907256747723290553122501628306
 # Other fields (such as pseudonym) can be whatever you want, we won't check them
 
 # def make_cert(netid, pubkey, ca_key = ECE422_CA_KEY, serial=x509.random_serial_number()):
-def make_cert(netid, pubkey, ca_key = ECE422_CA_KEY, serial=int('26e6b8f11fd1c564d5f14c5a021ac6effdf6f3ac',16)):
+def make_cert(netid, pubkey, ca_key = ECE422_CA_KEY, serial=1):
     builder = x509.CertificateBuilder()
     builder = builder.not_valid_before(datetime.datetime(2017, 3, 1))       # CAN'T MODIFY
     builder = builder.not_valid_after (datetime.datetime(2017, 3, 27))      # CAN'T MODIFY
@@ -48,7 +48,7 @@ def make_cert(netid, pubkey, ca_key = ECE422_CA_KEY, serial=int('26e6b8f11fd1c56
     builder = builder.issuer_name(x509.Name([
         x509.NameAttribute(NameOID.COMMON_NAME, u'ece422'),                 # CAN'T MODIFY
 ]))
-    builder = builder.serial_number(int('26e6b8f11fd1c564d5f14c5a021ac6effdf6f3ac',16))
+    builder = builder.serial_number(serial)
     builder = builder.public_key(pubkey)
     cert = builder.sign(private_key=ECE422_CA_KEY, algorithm=hashes.MD5(), backend=default_backend())
     return cert
