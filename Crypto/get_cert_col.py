@@ -35,7 +35,7 @@ def main():
         print('[USAGE]: ./get_cert_prefix.py <cert.cer_file> <cert_prefix_file> <fastcoll_executable_file> <cert_col1_file> <cert_col2_file> <certA.cer_file> <certB.cer_file>')
         exit(1)
 
-    print('[INFO]:     Generating certificate with NetID...')
+    print('[INFO]:     Generating %s file with NetID %s...'%(sys.argv[1],NetID))
     while 1:
         p = Crypto.Util.number.getPrime(1024)
         q = Crypto.Util.number.getPrime(1024)
@@ -51,7 +51,7 @@ def main():
     print('[INFO]:     try the following command: openssl x509 -in %s -inform der -text -noout'%sys.argv[1])
     print('[INFO]:     Finish generating certificate with NetID %s\n'%NetID)
 
-    print('[INFO]:             Parsing prefix to file %s...'%sys.argv[2])
+    print('[INFO]:     Parsing prefix to file %s...'%sys.argv[2])
     with open(sys.argv[2], 'wb') as cert_prefix_file:
         cert_prefix_file.write(cert.tbs_certificate_bytes[:MODULUS_START_ADDR])
 
