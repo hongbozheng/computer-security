@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Command: python3 sol_3.2.1.py 3.2.1_query.txt 3.2.1_command3.txt sol_3.2.1.txt
+# CMD: python3 sol_3.2.1.py 3.2.1_query.txt 3.2.1_command3.txt sol_3.2.1.txt
 
 import sys
 import urllib.parse
