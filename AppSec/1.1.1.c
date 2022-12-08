@@ -23,5 +23,3 @@ int _main()
 #endif
 	exit(0);
 }
-
-

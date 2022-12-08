@@ -34,5 +34,3 @@ int _main()
 
 	exit(0);
 }
-
-

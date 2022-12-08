@@ -28,4 +28,3 @@ int _main()
 	print_bad_grade();
 	return 0;
 }
-

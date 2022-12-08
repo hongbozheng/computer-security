@@ -21,5 +21,3 @@ int _main(int argc, char **argv)
 	vulnerable(argv[1]);
 	return 0;
 }
-
-
