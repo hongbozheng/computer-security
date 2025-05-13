@@ -2,14 +2,12 @@
 
 Introduction to Computer Security Materials.
 
-Instructor: Adam Bates & Ling Ren
-
 ## 📝 Assignments
-- [AppSec](https://github.com/hongbozheng/computer-security/tree/main/AppSec)
+- [Application Security](https://github.com/hongbozheng/computer-security/tree/main/app_sec)
 
-- [WebSec](https://github.com/hongbozheng/computer-security/tree/main/WebSec)
+- [Web Security](https://github.com/hongbozheng/computer-security/tree/main/web_sec)
 
-- [Crypto](https://github.com/hongbozheng/computer-security/tree/main/Crypto)
+- [Cryptography](https://github.com/hongbozheng/computer-security/tree/main/crypto)
 
 ## ⚖️ Academic Integrity Disclaimer
 
